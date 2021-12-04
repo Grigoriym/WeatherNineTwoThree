@@ -4,6 +4,7 @@ plugins {
     id 'kotlin-kapt'
     id 'kotlinx-serialization'
     id 'dagger.hilt.android.plugin'
+    id 'androidx.navigation.safeargs.kotlin'
 }
 
 android {
@@ -17,6 +18,10 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField("String", "API_WEATHER", "\"https://weather.cc.api.here.com/\"")
+        buildConfigField("String", "API_GEOCODING_AND_SEARCH", "\"https://autocomplete.search.hereapi.com/v1/\"")
+        buildConfigField("String", "API_OAUTH2", "\"https://account.api.here.com/oauth2/\"")
     }
 
     buildTypes {
@@ -51,10 +56,17 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
 
-    implementation "com.google.dagger:hilt-android:2.38.1"
-    kapt "com.google.dagger:hilt-compiler:2.38.1"
+    def nav_version = "2.3.5"
+    implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
+    implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
+
+    def dagger_version = "2.38.1"
+    implementation "com.google.dagger:hilt-android:$dagger_version"
+    kapt "com.google.dagger:hilt-compiler:$dagger_version"
 
     implementation "com.squareup.retrofit2:retrofit:2.9.0"
+    implementation "com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.8.0"
+    implementation 'com.squareup.okhttp3:okhttp:5.0.0-alpha.3'
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
