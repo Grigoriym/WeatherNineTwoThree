@@ -32,19 +32,15 @@ annotation class ApplicationScope
 @InstallIn(SingletonComponent::class)
 object CoroutinesModule {
 
-    @DefaultDispatcher
-    @Provides
+    @[Provides DefaultDispatcher]
     fun providesDefaultDispatcher(): CoroutineDispatcher = Dispatchers.Default
 
-    @IoDispatcher
-    @Provides
+    @[Provides IoDispatcher]
     fun providesIoDispatcher(): CoroutineDispatcher = Dispatchers.IO
 
-    @MainDispatcher
-    @Provides
+    @[Provides MainDispatcher]
     fun providesMainDispatcher(): CoroutineDispatcher = Dispatchers.Main
 
-    @MainImmediateDispatcher
-    @Provides
+    @[Provides MainImmediateDispatcher]
     fun providesMainImmediateDispatcher(): CoroutineDispatcher = Dispatchers.Main.immediate
 }

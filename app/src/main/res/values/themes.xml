@@ -3,7 +3,7 @@
   <style name="Theme.WeatherNineTwoThree" parent="Theme.MaterialComponents.DayNight.NoActionBar">
     <item name="colorPrimary">@color/nineTwoThreeWhite</item>
     <item name="colorPrimaryVariant">@color/nineTwoThreeMain</item>
-    <item name="colorPrimaryDark">@color/nineTwoThreeBg</item>
+<!--    <item name="colorPrimaryDark">@color/nineTwoThreeBg</item>-->
     <item name="colorOnPrimary">@color/nineTwoThreeMain</item>
 
     <item name="colorOnSecondary">@color/nineTwoThreeBlack</item>
@@ -11,9 +11,12 @@
     <item name="colorSurface">@color/nineTwoThreeWhite</item>
 
     <item name="android:windowBackground">@color/nineTwoThreeBg</item>
+    <item name="android:windowTranslucentStatus">true</item>
 
-    <item name="statusBarBackground">@color/nineTwoThreeBg</item>
-    <item name="android:statusBarColor">@color/nineTwoThreeBlack</item>
+<!--    <item name="statusBarBackground">@color/nineTwoThreeBg</item>-->
+<!--    <item name="android:statusBarColor">@color/nineTwoThreeBlack</item>-->
+
+    <item name="android:textCursorDrawable">@drawable/app_cursor</item>
 
     <item name="shapeAppearanceSmallComponent">@style/ShapeAppearance.NineTwoThree.SmallComponent</item>
     <item name="shapeAppearanceMediumComponent">@style/ShapeAppearance.NineTwoThree.MediumComponent</item>

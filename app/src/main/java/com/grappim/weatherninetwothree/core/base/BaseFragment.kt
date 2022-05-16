@@ -9,7 +9,7 @@ import androidx.viewbinding.ViewBinding
 
 /**
  * Base class for fragment which is used for:
- * 1) initializing and clearing viewBinding stuff
+ * 1) initializing and clearing viewBinding
  */
 open class BaseFragment<VB : ViewBinding>(
     private val inflate: (LayoutInflater, ViewGroup?, Boolean) -> VB

@@ -1,8 +1,8 @@
 package com.grappim.weatherninetwothree.domain.interactor.utils
 
-import com.grappim.weatherninetwothree.utils.logger.logE
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
+import timber.log.Timber
 
 /**
  * Executes business logic synchronously or asynchronously using Coroutines.
@@ -28,7 +28,7 @@ abstract class CoroutineUseCase<in P, R>(
                 }
             }
         } catch (e: Exception) {
-            logE(e)
+            Timber.e(e)
             Try.Error(e)
         }
     }

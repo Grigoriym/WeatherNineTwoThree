@@ -1,5 +1,16 @@
 <resources>
-  <string name="app_name">WeatherNineTwoThree</string>
+    <string name="app_name">WeatherNineTwoThree</string>
 
-  <string name="ok">OK</string>
+    <string name="ok">OK</string>
+
+    <string name="your_city">Your city</string>
+
+    <string name="action_back">Back</string>
+
+    <string name="temp">%1$s°</string>
+    <string name="temp_day_night">%1$s°/%2$s°</string>
+
+    <string name="location_permission_needed">Location permission is required to get the current location</string>
+    <string name="location_permission_not_available">Permission is not available. Requesting location permission.</string>
+    <string name="location_permission_denied">Location permission request was denied</string>
 </resources>

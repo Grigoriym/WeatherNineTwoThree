@@ -1,7 +1,6 @@
 package com.grappim.weatherninetwothree.di
 
-import com.grappim.weatherninetwothree.data.network.service.GeocodingAndSearchService
-import com.grappim.weatherninetwothree.data.network.service.OauthService
+import com.grappim.weatherninetwothree.data.network.service.GeoapifyService
 import com.grappim.weatherninetwothree.data.network.service.WeatherService
 import dagger.Module
 import dagger.Provides
@@ -18,30 +17,18 @@ annotation class QualifierOauthService
 annotation class QualifierWeatherService
 
 @Qualifier
-annotation class QualifierGeocodingAndSearchService
+annotation class QualifierGeoapifyService
 
-@Module
-@InstallIn(SingletonComponent::class)
+@[Module InstallIn(SingletonComponent::class)]
 object ApiModule {
 
-    @QualifierOauthService
-    @Singleton
-    @Provides
-    fun provideOauthService(
-        @QualifierOauthRetrofit retrofit: Retrofit
-    ): OauthService = retrofit.create(OauthService::class.java)
-
-    @QualifierWeatherService
-    @Singleton
-    @Provides
+    @[Singleton Provides QualifierWeatherService]
     fun provideWeatherService(
         @QualifierWeatherRetrofit retrofit: Retrofit
     ): WeatherService = retrofit.create(WeatherService::class.java)
 
-    @QualifierGeocodingAndSearchService
-    @Singleton
-    @Provides
-    fun provideGeocodingAndSearchService(
+    @[Singleton Provides QualifierGeoapifyService]
+    fun provideGeoapifyService(
         @QualifierGeocodingAndSearchRetrofit retrofit: Retrofit
-    ): GeocodingAndSearchService = retrofit.create(GeocodingAndSearchService::class.java)
+    ): GeoapifyService = retrofit.create(GeoapifyService::class.java)
 }

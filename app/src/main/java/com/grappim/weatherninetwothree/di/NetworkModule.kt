@@ -5,9 +5,10 @@ import com.chuckerteam.chucker.api.ChuckerCollector
 import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.chuckerteam.chucker.api.RetentionManager
 import com.grappim.weatherninetwothree.BuildConfig
-import com.grappim.weatherninetwothree.data.network.authenticators.OauthTokenAuthenticator
+import com.grappim.weatherninetwothree.data.network.Tls12SocketFactory.Companion.enableTls12Compat
 import com.grappim.weatherninetwothree.data.network.interceptors.ErrorMappingInterceptor
-import com.grappim.weatherninetwothree.utils.logger.logD
+import com.grappim.weatherninetwothree.data.network.interceptors.GeoapifyApiKeyInterceptor
+import com.grappim.weatherninetwothree.data.network.interceptors.OpenWeatherAuthTokenInterceptor
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import dagger.Module
 import dagger.Provides
@@ -19,12 +20,10 @@ import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
+import timber.log.Timber
 import java.util.concurrent.TimeUnit
 import javax.inject.Qualifier
 import javax.inject.Singleton
-
-@Qualifier
-annotation class QualifierOauthRetrofit
 
 @Qualifier
 annotation class QualifierWeatherRetrofit
@@ -32,72 +31,70 @@ annotation class QualifierWeatherRetrofit
 @Qualifier
 annotation class QualifierGeocodingAndSearchRetrofit
 
-@Module
-@InstallIn(SingletonComponent::class)
+@[Module InstallIn(SingletonComponent::class)]
 object NetworkModule {
 
-    @Provides
-    @Singleton
-    fun provideRetrofitBuilder(): Retrofit.Builder {
+    @[Provides Singleton]
+    fun provideSerialization(): Json =
+        Json {
+            isLenient = true
+            prettyPrint = false
+            ignoreUnknownKeys = true
+            explicitNulls = false
+        }
+
+    @[Provides Singleton]
+    fun provideRetrofitBuilder(
+        json: Json
+    ): Retrofit.Builder {
         val contentType = "application/json".toMediaType()
         return Retrofit.Builder()
-            .addConverterFactory(Json.asConverterFactory(contentType))
+            .addConverterFactory(json.asConverterFactory(contentType))
     }
 
-    @QualifierOauthRetrofit
-    @Provides
-    @Singleton
-    fun provideOauthRetrofit(
-        builder: Retrofit.Builder,
-        okHttpClient: OkHttpClient
-    ): Retrofit =
-        builder.baseUrl(BuildConfig.API_OAUTH2)
-            .client(okHttpClient)
-            .build()
-
-    @QualifierWeatherRetrofit
-    @Provides
-    @Singleton
+    @[Provides Singleton QualifierWeatherRetrofit]
     fun provideWeatherRetrofit(
         builder: Retrofit.Builder,
-        okHttpClient: OkHttpClient
+        okHttpClient: OkHttpClient,
+        appBuildConfigProvider: AppBuildConfigProvider
     ): Retrofit =
-        builder.baseUrl(BuildConfig.API_WEATHER)
+        builder.baseUrl(appBuildConfigProvider.apiOpenWeatherHost)
             .client(okHttpClient)
             .build()
 
-    @QualifierGeocodingAndSearchRetrofit
-    @Provides
-    @Singleton
+    @[Provides Singleton QualifierGeocodingAndSearchRetrofit]
     fun provideGeocodingAndSearchRetrofit(
         builder: Retrofit.Builder,
-        okHttpClient: OkHttpClient
+        okHttpClient: OkHttpClient,
+        appBuildConfigProvider: AppBuildConfigProvider
     ): Retrofit =
-        builder.baseUrl(BuildConfig.API_GEOCODING_AND_SEARCH)
+        builder.baseUrl(appBuildConfigProvider.geoApifyHost)
             .client(okHttpClient)
             .build()
 
-    @Provides
-    @Singleton
+    @[Provides Singleton]
     fun provideHttpLoggingInterceptor(): HttpLoggingInterceptor =
         HttpLoggingInterceptor { message ->
-            logD("API", message)
+            Timber.tag("API").d(message)
         }.apply {
             level = HttpLoggingInterceptor.Level.BODY
         }
 
-    @Provides
-    @Singleton
+    @[Provides Singleton]
     fun provideOkHttpClient(
         loggingInterceptor: HttpLoggingInterceptor,
         errorMappingInterceptor: ErrorMappingInterceptor,
         chuckerInterceptor: ChuckerInterceptor,
-        oauthTokenAuthenticator: OauthTokenAuthenticator
+        openWeatherAuthTokenInterceptor: OpenWeatherAuthTokenInterceptor,
+        geoapifyApiKeyInterceptor: GeoapifyApiKeyInterceptor,
+        @ApplicationContext context: Context
     ): OkHttpClient =
         OkHttpClient.Builder()
+            .enableTls12Compat(context)
             .connectTimeout(30L, TimeUnit.SECONDS)
             .readTimeout(30L, TimeUnit.SECONDS)
-            .authenticator(oauthTokenAuthenticator)
+            .addInterceptor(openWeatherAuthTokenInterceptor)
+            .addInterceptor(geoapifyApiKeyInterceptor)
             .addInterceptor(errorMappingInterceptor)
             .apply {
                 if (BuildConfig.DEBUG) {
@@ -107,8 +104,7 @@ object NetworkModule {
             }
             .build()
 
-    @Singleton
-    @Provides
+    @[Singleton Provides]
     fun provideChuckerInterceptor(
         @ApplicationContext appContext: Context
     ): ChuckerInterceptor {

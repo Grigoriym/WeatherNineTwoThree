@@ -1,61 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
-  xmlns:app="http://schemas.android.com/apk/res-auto"
-  xmlns:tools="http://schemas.android.com/tools"
-  style="@style/Widget.NineTwoThree.CardView.ListItem"
-  android:layout_width="match_parent"
-  android:layout_height="wrap_content">
-
-  <androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/Widget.NineTwoThree.CardView.ListItem"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <TextView
-      android:id="@+id/tvDate"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_marginStart="16dp"
-      android:layout_marginTop="8dp"
-      android:textAppearance="@style/TextAppearance.NineTwoThree.Subtitle1"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toTopOf="parent"
-      tools:text="Nov 4, Thu" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-    <ImageView
-      android:id="@+id/ivWeatherType"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      app:layout_constraintBottom_toBottomOf="@+id/tvWeatherType"
-      app:layout_constraintStart_toStartOf="@id/tvDate"
-      app:layout_constraintTop_toTopOf="@+id/tvWeatherType"
-      tools:src="@drawable/ic_thunderstorm" />
+        <TextView
+            android:id="@+id/tvDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:textAppearance="@style/TextAppearance.NineTwoThree.Subtitle1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Nov 4, Thu" />
 
-    <TextView
-      android:id="@+id/tvWeatherType"
-      android:layout_width="0dp"
-      android:layout_height="wrap_content"
-      android:layout_marginStart="8dp"
-      android:layout_marginTop="8dp"
-      android:layout_marginEnd="8dp"
-      android:layout_marginBottom="8dp"
-      android:textAppearance="@style/TextAppearance.NineTwoThree.Body1"
-      app:layout_constraintBottom_toBottomOf="parent"
-      app:layout_constraintEnd_toStartOf="@+id/tvTemperature"
-      app:layout_constraintStart_toEndOf="@id/ivWeatherType"
-      app:layout_constraintTop_toBottomOf="@id/tvDate"
-      tools:text="Thunderstorm" />
+        <ImageView
+            android:id="@+id/ivWeatherType"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            app:layout_constraintBottom_toBottomOf="@+id/tvWeatherType"
+            app:layout_constraintStart_toStartOf="@id/tvDate"
+            app:layout_constraintTop_toTopOf="@+id/tvWeatherType"
+            tools:src="@tools:sample/avatars" />
 
-    <TextView
-      android:id="@+id/tvTemperature"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_marginEnd="16dp"
-      android:textAppearance="@style/TextAppearance.NineTwoThree.Body2"
-      app:layout_constraintBottom_toBottomOf="@+id/tvWeatherType"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintTop_toTopOf="@id/tvDate"
-      tools:text="+16 / +8" />
+        <TextView
+            android:id="@+id/tvWeatherType"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:ellipsize="end"
+            android:textAppearance="@style/TextAppearance.NineTwoThree.Body1"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/tvTemperature"
+            app:layout_constraintStart_toEndOf="@id/ivWeatherType"
+            app:layout_constraintTop_toBottomOf="@id/tvDate"
+            tools:text="Thunderstorm" />
 
-  </androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/tvTemperature"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:textAppearance="@style/TextAppearance.NineTwoThree.Body2"
+            app:layout_constraintBottom_toBottomOf="@+id/tvWeatherType"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tvDate"
+            tools:text="+16°/-8°" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </com.google.android.material.card.MaterialCardView>
