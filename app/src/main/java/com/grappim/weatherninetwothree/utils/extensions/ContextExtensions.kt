@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.util.DisplayMetrics
 import androidx.annotation.ColorRes
+import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat
 
 fun Context.dpToPx(dp: Int): Int =
@@ -25,3 +26,6 @@ fun Context.isPermissionNotGranted(permission: String): Boolean =
     ) != PackageManager.PERMISSION_DENIED
 
 fun Context.color(@ColorRes colorRes: Int) = ContextCompat.getColor(this, colorRes)
+
+fun Context.drawable(@DrawableRes drawableRes: Int) =
+    ContextCompat.getDrawable(this, drawableRes)

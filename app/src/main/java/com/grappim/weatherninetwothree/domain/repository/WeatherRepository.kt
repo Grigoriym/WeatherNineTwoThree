@@ -1,6 +1,6 @@
 package com.grappim.weatherninetwothree.domain.repository
 
-import com.grappim.weatherninetwothree.domain.interactor.GetCurrentLocationUseCase
+import com.grappim.weatherninetwothree.domain.interactor.GetCurrentPlaceUseCase
 import com.grappim.weatherninetwothree.domain.interactor.GetWeatherDataUseCase
 import com.grappim.weatherninetwothree.domain.interactor.utils.Try
 import com.grappim.weatherninetwothree.domain.model.CurrentLocation
@@ -14,7 +14,7 @@ interface WeatherRepository {
     ): Flow<Try<WeatherDetails>>
 
     fun getCurrentLocation(
-        params: GetCurrentLocationUseCase.Params
+        params: GetCurrentPlaceUseCase.Params
     ): Flow<Try<CurrentLocation>>
 
 }

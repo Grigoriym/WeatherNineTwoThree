@@ -9,10 +9,10 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-class GetCurrentLocationUseCase @Inject constructor(
+class GetCurrentPlaceUseCase @Inject constructor(
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
     private val weatherRepository: WeatherRepository
-) : FlowUseCase<GetCurrentLocationUseCase.Params, CurrentLocation>(ioDispatcher) {
+) : FlowUseCase<GetCurrentPlaceUseCase.Params, CurrentLocation>(ioDispatcher) {
 
     data class Params(
         val longitude: Double,

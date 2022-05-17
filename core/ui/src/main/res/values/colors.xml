@@ -3,6 +3,7 @@
   <color name="nineTwoThreeBg">#F6F6F6</color>
   <color name="nineTwoThreeMain">#0094FF</color>
   <color name="nineTwoThreeGray">#808080</color>
+  <color name="nineTwoThreeGrey">#D0D0D0</color>
   <color name="nineTwoThreeBlack">#FF000000</color>
   <color name="nineTwoThreeWhite">#FFFFFFFF</color>
 </resources>

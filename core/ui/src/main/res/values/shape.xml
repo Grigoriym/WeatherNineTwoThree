@@ -11,4 +11,11 @@
     <item name="cornerSize">20dp</item>
   </style>
 
+  <style name="ShapeAppearance.NineTwoThree.CardView" parent="">
+    <item name="cornerFamilyBottomLeft">rounded</item>
+    <item name="cornerFamilyBottomRight">rounded</item>
+    <item name="cornerSizeBottomLeft">20dp</item>
+    <item name="cornerSizeBottomRight">20dp</item>
+  </style>
+
 </resources>

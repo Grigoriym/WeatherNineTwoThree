@@ -5,13 +5,13 @@
 
     <style name="Widget.NineTwoThree.CardView.ListItem">
         <item name="cardBackgroundColor">@color/nineTwoThreeWhite</item>
-        <item name="cardElevation">2dp</item>
+        <item name="cardElevation">4dp</item>
         <item name="shapeAppearance">@style/ShapeAppearance.NineTwoThree.MediumComponent</item>
     </style>
 
     <style name="Widget.NineTwoThree.Button.Primary" parent="Widget.MaterialComponents.Button">
         <item name="shapeAppearance">@style/ShapeAppearance.NineTwoThree.SmallComponent</item>
-        <item name="elevation">2dp</item>
+        <item name="elevation">8dp</item>
 
         <item name="textAllCaps">true</item>
         <item name="android:textColor">@color/nineTwoThreeWhite</item>
@@ -34,6 +34,7 @@
         <item name="minHeight">24dp</item>
 
         <item name="strokeWidth">0dp</item>
+        <item name="elevation">8dp</item>
 
         <item name="android:background">@drawable/main_btn_bg_gradient</item>
         <item name="backgroundTint">@null</item>
@@ -41,10 +42,11 @@
 
     <style name="Widget.NineTwoThree.Button.IconOnly.Search">
         <item name="icon">@drawable/ic_pinpoint</item>
+        <item name="iconTint">@color/nineTwoThreeWhite</item>
         <item name="background">@drawable/main_btn_bg_gradient</item>
     </style>
 
-    <style name="Widget.NineTwoThree.TextInputLayout.Search" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
+    <style name="Widget.NineTwoThree.TextInputLayout.Search" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
         <item name="hintEnabled">false</item>
         <item name="errorEnabled">false</item>
         <item name="boxBackgroundColor">@color/nineTwoThreeWhite</item>
@@ -53,7 +55,8 @@
         <item name="startIconDrawable">@drawable/ic_pin</item>
         <item name="startIconTint">@color/nineTwoThreeMain</item>
 
-        <item name="colorControlActivated">@color/nineTwoThreeMain</item>
+        <item name="boxStrokeColor">@color/nineTwoThreeMain</item>
+        <item name="boxStrokeWidthFocused">1dp</item>
     </style>
 
     <style name="Widget.NineTwoThree.TextInputEditText" parent="">
@@ -61,17 +64,14 @@
     </style>
 
     <style name="Widget.NineTwoThree.TextInputEditText.Search">
-        <item name="android:background">@color/nineTwoThreeWhite</item>
+        <item name="android:imeOptions">actionDone</item>
+        <item name="android:inputType">textNoSuggestions</item>
+        <item name="android:textColor">@color/nineTwoThreeBlack</item>
+        <item name="android:textColorHint">@color/nineTwoThreeGray</item>
+        <item name="android:textAppearance">@style/TextAppearance.NineTwoThree.Subtitle2</item>
     </style>
 
-    <style name="ShapeAppearance.NineTwoThree.CardView" parent="">
-        <item name="cornerFamilyBottomLeft">rounded</item>
-        <item name="cornerFamilyBottomRight">rounded</item>
-        <item name="cornerSizeBottomLeft">20dp</item>
-        <item name="cornerSizeBottomRight">20dp</item>
-    </style>
-
-    <style name="Widget.NineTwoThree.TextButton.Phone" parent="Widget.MaterialComponents.Button.TextButton">
+    <style name="Widget.NineTwoThree.TextButton.BackButton" parent="Widget.MaterialComponents.Button.TextButton">
         <item name="textAllCaps">false</item>
         <item name="android:textSize">18sp</item>
         <item name="android:text">@string/action_back</item>

@@ -1,7 +1,9 @@
 package com.grappim.weatherninetwothree.ui.weather_details
 
+import android.graphics.Color
 import android.os.Bundle
 import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -12,6 +14,7 @@ import com.grappim.weatherninetwothree.databinding.FragmentWeatherDetailsBinding
 import com.grappim.weatherninetwothree.ui.search_city.CurrentLocationInfo
 import com.grappim.weatherninetwothree.utils.delegate.lazyArg
 import com.grappim.weatherninetwothree.utils.extensions.assistedViewModel
+import com.grappim.weatherninetwothree.utils.extensions.color
 import com.grappim.weatherninetwothree.utils.views.SimpleItemDecoration
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.filterNotNull

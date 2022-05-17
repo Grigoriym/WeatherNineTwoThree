@@ -4,7 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.grappim.weatherninetwothree.domain.FoundLocation
-import com.grappim.weatherninetwothree.domain.interactor.GetCurrentLocationUseCase
+import com.grappim.weatherninetwothree.domain.interactor.GetCurrentPlaceUseCase
 import com.grappim.weatherninetwothree.domain.interactor.SearchLocationUseCase
 import com.grappim.weatherninetwothree.domain.interactor.utils.Try
 import com.grappim.weatherninetwothree.utils.INPUT_DEBOUNCE
@@ -16,13 +16,13 @@ import javax.inject.Inject
 @HiltViewModel
 class SearchCityViewModel @Inject constructor(
     private val searchLocationUseCase: SearchLocationUseCase,
-    private val getCurrentLocationUseCase: GetCurrentLocationUseCase,
+    private val getCurrentPlaceUseCase: GetCurrentPlaceUseCase,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
-    private val _searchInput = MutableStateFlow("")
-    val searchInput: StateFlow<Try<List<FoundLocation>>>
-        get() = _searchInput.asStateFlow()
+    private val _searchInput = MutableSharedFlow<String>()
+    val searchInput: SharedFlow<Try<List<FoundLocation>>>
+        get() = _searchInput.asSharedFlow()
             .filter { it.length >= MIN_EDIT_TEXT_INPUT_SIZE }
             .debounce(INPUT_DEBOUNCE)
             .flatMapMerge {
@@ -34,7 +34,6 @@ class SearchCityViewModel @Inject constructor(
                 initialValue = Try.Initial
             )
 
-    var isGettingCurrentPosition = false
     var isButtonOkVisible: Boolean =
         savedStateHandle[SearchCityFragment.ARG_KEY_BTN_OK_VISIBILITY] ?: false
 
@@ -45,13 +44,12 @@ class SearchCityViewModel @Inject constructor(
     val foundLocation: SharedFlow<String>
         get() = _foundLocation.asSharedFlow()
 
-    fun getCurrentPosition() {
-        isGettingCurrentPosition = true
+    fun getCurrentPlace() {
         viewModelScope.launch {
-            getCurrentLocationUseCase.invoke(
-                GetCurrentLocationUseCase.Params(
-                    longitude = longitude!!,
-                    latitude = latitude!!
+            getCurrentPlaceUseCase.invoke(
+                GetCurrentPlaceUseCase.Params(
+                    longitude = requireNotNull(longitude),
+                    latitude = requireNotNull(latitude)
                 )
             ).collect {
                 when (it) {
@@ -65,9 +63,7 @@ class SearchCityViewModel @Inject constructor(
 
     fun searchLocation(query: String) {
         viewModelScope.launch {
-            if (!isGettingCurrentPosition) {
-                _searchInput.value = query
-            }
+            _searchInput.emit(query)
         }
     }
 

@@ -5,12 +5,13 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
+import android.text.Editable
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.isVisible
+import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import com.grappim.weatherninetwothree.R
@@ -19,19 +20,14 @@ import com.grappim.weatherninetwothree.core.location.LocationResult
 import com.grappim.weatherninetwothree.core.location.NineTwoThreeLocationManager
 import com.grappim.weatherninetwothree.core.location.NineTwoThreeLocationManagerImpl
 import com.grappim.weatherninetwothree.databinding.FragmentSearchCityBinding
+import com.grappim.weatherninetwothree.domain.FoundLocation
 import com.grappim.weatherninetwothree.domain.interactor.utils.Try
 import com.grappim.weatherninetwothree.ui.weather_details.WeatherDetailsFragment
-import com.grappim.weatherninetwothree.utils.extensions.hideSoftKeyboard
-import com.grappim.weatherninetwothree.utils.extensions.isPermissionGranted
-import com.grappim.weatherninetwothree.utils.extensions.launchAndRepeatWithViewLifecycle
-import com.grappim.weatherninetwothree.utils.extensions.showSnackbar
+import com.grappim.weatherninetwothree.utils.extensions.*
 import com.grappim.weatherninetwothree.utils.locationPermissions
+import com.grappim.weatherninetwothree.utils.views.SimpleDividerItemDecoration
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.drop
-import kotlinx.coroutines.flow.filter
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
-import reactivecircus.flowbinding.android.widget.textChanges
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class SearchCityFragment : BaseFragment<FragmentSearchCityBinding>(
@@ -40,12 +36,12 @@ class SearchCityFragment : BaseFragment<FragmentSearchCityBinding>(
 
     private val viewModel by viewModels<SearchCityViewModel>()
 
-    private val arrayAdapter by lazy {
-        SearchCityArrayAdapter(requireContext())
-    }
-
     private val locationManager: NineTwoThreeLocationManager by lazy {
         NineTwoThreeLocationManagerImpl()
+    }
+
+    private val adapter by lazy {
+        CitiesRecyclerAdapter(::onFoundLocationClicked)
     }
 
     private val locationPermissionRequest = registerForActivityResult(
@@ -72,11 +68,7 @@ class SearchCityFragment : BaseFragment<FragmentSearchCityBinding>(
         super.onViewCreated(view, savedInstanceState)
         restoreState(savedInstanceState)
         initViews()
-    }
-
-    override fun onStop() {
-        super.onStop()
-        locationManager.stopLocationManager()
+        observeViewModel()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -88,42 +80,66 @@ class SearchCityFragment : BaseFragment<FragmentSearchCityBinding>(
 
     private fun restoreState(savedInstanceState: Bundle?) {
         if (savedInstanceState != null) {
-            binding.btnOk.isVisible = savedInstanceState.getBoolean(ARG_KEY_BTN_OK_VISIBILITY)
-            viewModel.isButtonOkVisible = binding.btnOk.isVisible
+            setOkButtonVisibility(savedInstanceState.getBoolean(ARG_KEY_BTN_OK_VISIBILITY))
         } else {
             binding.btnOk.isVisible = viewModel.isButtonOkVisible
         }
     }
 
+    private fun observeViewModel() {
+        launchAndRepeatWithViewLifecycle {
+            launch {
+                viewModel.foundLocation.collect {
+                    setEditCityText(it)
+                }
+            }
+            launch {
+                viewModel.searchInput.collect {
+                    when (it) {
+                        is Try.Success -> {
+                            binding.cardPlaces.fadeVisibility(it.data.isNotEmpty())
+                            adapter.submitList(it.data)
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * Tag and focus are needed to fix excessive requests in some situations, so that
+     * we only do searchLocation only when we type something in editText and
+     * do nothing if we paste location from recyclerView or from getCurrentPlace
+     */
+    private fun setEditCityText(text: String) {
+        with(binding) {
+            val focussed = etCity.hasFocus()
+            if (focussed) {
+                etCity.clearFocus()
+            }
+            etCity.tag = text
+            etCity.setText(text)
+            etCity.setSelection(text.length)
+            etCity.tag = null
+        }
+    }
+
     private fun initViews() {
         with(binding) {
-            etCity.textChanges()
-                .filter {
-                    it.toString().isNotEmpty()
+            etCity.doAfterTextChanged { text: Editable? ->
+                if (text.isNullOrEmpty()) {
+                    return@doAfterTextChanged
                 }
-                .drop(1)
-                .onEach { event ->
-                    if (!viewModel.isGettingCurrentPosition &&
-                        !etCity.isPerformingCompletion
-                    ) {
-                        btnOk.isVisible = false
-                        viewModel.isButtonOkVisible = false
-                    }
-                    if (!etCity.isPerformingCompletion) {
-                        viewModel.searchLocation(event.toString())
-                    }
-                    if (viewModel.isGettingCurrentPosition) {
-                        viewModel.isGettingCurrentPosition = false
-                    }
+                val etTag = binding.etCity.tag
+                val etHasFocus = binding.etCity.hasFocus()
+                if (etTag == null && etHasFocus) {
+                    viewModel.searchLocation(text.toString())
+                    setOkButtonVisibility(false)
+                } else {
+                    setOkButtonVisibility(true)
                 }
-                .launchIn(viewLifecycleOwner.lifecycleScope)
-            etCity.setOnItemClickListener { _, _, position, _ ->
-                btnOk.isVisible = true
-                viewModel.isButtonOkVisible = true
-                viewModel.longitude = arrayAdapter.getItemNotNull(position).longitude
-                viewModel.latitude = arrayAdapter.getItemNotNull(position).latitude
             }
-            etCity.setOnEditorActionListener { v, actionId, event ->
+            etCity.setOnEditorActionListener { _, actionId, _ ->
                 return@setOnEditorActionListener when (actionId) {
                     EditorInfo.IME_ACTION_DONE -> {
                         goToWeatherDetails()
@@ -132,7 +148,6 @@ class SearchCityFragment : BaseFragment<FragmentSearchCityBinding>(
                     else -> false
                 }
             }
-            etCity.setAdapter(arrayAdapter)
 
             btnOk.setOnClickListener {
                 goToWeatherDetails()
@@ -140,25 +155,28 @@ class SearchCityFragment : BaseFragment<FragmentSearchCityBinding>(
             btnSearch.setOnClickListener {
                 launchLocationManager()
             }
-        }
 
-        launchAndRepeatWithViewLifecycle {
-            viewModel.foundLocation.collect {
-                binding.etCity.setText(it)
-                binding.btnOk.isVisible = true
-                viewModel.isButtonOkVisible = true
-            }
+            rvPlaces.addItemDecoration(SimpleDividerItemDecoration(requireContext()))
+            rvPlaces.adapter = adapter
         }
+    }
 
-        launchAndRepeatWithViewLifecycle {
-            viewModel.searchInput.collect {
-                when (it) {
-                    is Try.Success -> {
-                        arrayAdapter.submitData(it.data)
-                    }
-                }
-            }
-        }
+    private fun onFoundLocationClicked(foundLocation: FoundLocation) {
+        viewModel.longitude = foundLocation.longitude
+        viewModel.latitude = foundLocation.latitude
+        setEditCityText(foundLocation.cityName)
+
+        clearAdapter()
+    }
+
+    private fun clearAdapter() {
+        adapter.submitList(emptyList())
+        binding.cardPlaces.fadeVisibility(false)
+    }
+
+    private fun setOkButtonVisibility(isVisible: Boolean) {
+        viewModel.isButtonOkVisible = isVisible
+        binding.btnOk.isVisible = isVisible
     }
 
     private fun goToWeatherDetails() {
@@ -221,16 +239,19 @@ class SearchCityFragment : BaseFragment<FragmentSearchCityBinding>(
                 requireContext().isPermissionGranted(Manifest.permission.ACCESS_FINE_LOCATION))
 
     private fun initLocationUpdates() {
-        locationManager.getCurrentLocation(requireContext()) { locationResult ->
-            when (locationResult) {
-                is LocationResult.Success -> {
-                    viewModel.latitude = locationResult.latitude
-                    viewModel.longitude = locationResult.longitude
-                    viewModel.getCurrentPosition()
-                }
-                is LocationResult.Error -> {
+        locationManager.getCurrentLocation(requireContext(), ::handleLocationUpdates)
+    }
 
-                }
+    private fun handleLocationUpdates(locationResult: LocationResult) {
+        when (locationResult) {
+            is LocationResult.Success -> {
+                clearAdapter()
+                viewModel.latitude = locationResult.latitude
+                viewModel.longitude = locationResult.longitude
+                viewModel.getCurrentPlace()
+            }
+            is LocationResult.Error -> {
+
             }
         }
     }

@@ -45,7 +45,7 @@
 
         <Button
             android:id="@+id/btnBack"
-            style="@style/Widget.NineTwoThree.TextButton.Phone"
+            style="@style/Widget.NineTwoThree.TextButton.BackButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -100,7 +100,9 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/ivTop" />
+            app:layout_constraintTop_toBottomOf="@id/ivTop"
+            tools:itemCount="4"
+            tools:listitem="@layout/item_weather" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

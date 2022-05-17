@@ -1,8 +1,7 @@
 package com.grappim.weatherninetwothree.ui.root
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.grappim.weatherninetwothree.R
+import androidx.appcompat.app.AppCompatActivity
 import com.grappim.weatherninetwothree.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
 

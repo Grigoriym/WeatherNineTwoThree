@@ -6,7 +6,7 @@ import com.grappim.weatherninetwothree.di.AppBuildConfigProvider
 import com.grappim.weatherninetwothree.di.DateTimeStandard
 import com.grappim.weatherninetwothree.di.DecimalWholeNumberFormat
 import com.grappim.weatherninetwothree.di.QualifierWeatherService
-import com.grappim.weatherninetwothree.domain.interactor.GetCurrentLocationUseCase
+import com.grappim.weatherninetwothree.domain.interactor.GetCurrentPlaceUseCase
 import com.grappim.weatherninetwothree.domain.interactor.GetWeatherDataUseCase
 import com.grappim.weatherninetwothree.domain.interactor.utils.Try
 import com.grappim.weatherninetwothree.domain.model.CurrentLocation
@@ -44,7 +44,7 @@ class WeatherRepositoryImpl @Inject constructor(
     }
 
     override fun getCurrentLocation(
-        params: GetCurrentLocationUseCase.Params
+        params: GetCurrentPlaceUseCase.Params
     ): Flow<Try<CurrentLocation>> = flow {
         emit(Try.Loading)
         val response = weatherService.getReverseGeocoding(

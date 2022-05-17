@@ -8,6 +8,4 @@ interface NineTwoThreeLocationManager {
         context: Context,
         onResult: (LocationResult) -> Unit
     )
-
-    fun stopLocationManager()
 }

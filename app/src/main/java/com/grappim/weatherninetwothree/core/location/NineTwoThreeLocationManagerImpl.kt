@@ -4,16 +4,10 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.location.Location
 import android.location.LocationManager
-import androidx.core.location.LocationListenerCompat
+import android.os.CancellationSignal
 import timber.log.Timber
 
 class NineTwoThreeLocationManagerImpl : NineTwoThreeLocationManager {
-
-    private val gpsLocationListener: LocationListenerCompat =
-        LocationListenerCompat { Timber.d("gpsLocationListener: $it") }
-
-    private val networkLocationListener: LocationListenerCompat =
-        LocationListenerCompat { Timber.d("networkLocationListener: $it") }
 
     private lateinit var locationManager: LocationManager
     private var currentLocation: Location? = null
@@ -30,36 +24,9 @@ class NineTwoThreeLocationManagerImpl : NineTwoThreeLocationManager {
         locationManager = context
             .applicationContext
             .getSystemService(Context.LOCATION_SERVICE) as LocationManager
-        initLocationUpdates()
         getLocation(
             onResult = onResult
         )
-    }
-
-    @SuppressLint("MissingPermission")
-    private fun initLocationUpdates() {
-        val hasGps = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
-        val hasNetwork = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
-        Timber.d("isGpsEnabled: $hasGps, isNetworkEnabled: $hasNetwork")
-        if (hasGps) {
-            locationManager.removeUpdates(gpsLocationListener)
-            locationManager.requestLocationUpdates(
-                LocationManager.GPS_PROVIDER,
-                5000,
-                0F,
-                gpsLocationListener
-            )
-        }
-
-        if (hasNetwork) {
-            locationManager.removeUpdates(networkLocationListener)
-            locationManager.requestLocationUpdates(
-                LocationManager.NETWORK_PROVIDER,
-                5000,
-                0F,
-                networkLocationListener
-            )
-        }
     }
 
     @SuppressLint("MissingPermission")
@@ -107,20 +74,12 @@ class NineTwoThreeLocationManagerImpl : NineTwoThreeLocationManager {
                     latitude = latitude!!
                 )
             )
-            stopLocationManager()
         } else {
             onResult(
                 LocationResult.Error(
                     IllegalStateException("Cannot retrieve location data")
                 )
             )
-        }
-    }
-
-    override fun stopLocationManager() {
-        if (::locationManager.isInitialized) {
-            locationManager.removeUpdates(gpsLocationListener)
-            locationManager.removeUpdates(networkLocationListener)
         }
     }
 
