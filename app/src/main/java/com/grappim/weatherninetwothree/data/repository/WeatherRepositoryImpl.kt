@@ -2,14 +2,14 @@ package com.grappim.weatherninetwothree.data.repository
 
 import com.grappim.weatherninetwothree.data.mapper.toDomain
 import com.grappim.weatherninetwothree.data.network.service.WeatherService
-import com.grappim.weatherninetwothree.di.AppBuildConfigProvider
-import com.grappim.weatherninetwothree.di.DateTimeStandard
-import com.grappim.weatherninetwothree.di.DecimalWholeNumberFormat
-import com.grappim.weatherninetwothree.di.QualifierWeatherService
+import com.grappim.weatherninetwothree.di.app.AppBuildConfigProvider
+import com.grappim.weatherninetwothree.di.app.DateTimeStandard
+import com.grappim.weatherninetwothree.di.app.DecimalWholeNumberFormat
+import com.grappim.weatherninetwothree.di.app.QualifierWeatherService
 import com.grappim.weatherninetwothree.domain.interactor.GetCurrentPlaceUseCase
 import com.grappim.weatherninetwothree.domain.interactor.GetWeatherDataUseCase
 import com.grappim.weatherninetwothree.domain.interactor.utils.Try
-import com.grappim.weatherninetwothree.domain.model.CurrentLocation
+import com.grappim.weatherninetwothree.domain.model.location.CurrentLocation
 import com.grappim.weatherninetwothree.domain.model.weather.WeatherDetails
 import com.grappim.weatherninetwothree.domain.repository.WeatherRepository
 import kotlinx.coroutines.flow.Flow

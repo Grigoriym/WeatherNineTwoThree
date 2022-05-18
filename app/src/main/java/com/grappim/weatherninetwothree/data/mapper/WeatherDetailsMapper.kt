@@ -4,7 +4,7 @@ import com.grappim.weatherninetwothree.data.model.weather.WeatherCurrentDailyDTO
 import com.grappim.weatherninetwothree.domain.model.weather.CurrentWeather
 import com.grappim.weatherninetwothree.domain.model.weather.DailyWeather
 import com.grappim.weatherninetwothree.domain.model.weather.WeatherDetails
-import com.grappim.weatherninetwothree.utils.DateTimeFormatHelper
+import com.grappim.weatherninetwothree.utils.date_time.DateTimeFormatHelper
 import com.grappim.weatherninetwothree.utils.extensions.getFormattedWithTemperatureSign
 import java.text.DecimalFormat
 import java.time.format.DateTimeFormatter

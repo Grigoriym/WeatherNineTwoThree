@@ -1,12 +1,8 @@
 package com.grappim.weatherninetwothree.ui.weather_details
 
-import android.graphics.Color
 import android.os.Bundle
 import android.view.View
-import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
-import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.findNavController
 import coil.load
 import com.grappim.weatherninetwothree.R
 import com.grappim.weatherninetwothree.core.base.BaseFragment
@@ -14,11 +10,10 @@ import com.grappim.weatherninetwothree.databinding.FragmentWeatherDetailsBinding
 import com.grappim.weatherninetwothree.ui.search_city.CurrentLocationInfo
 import com.grappim.weatherninetwothree.utils.delegate.lazyArg
 import com.grappim.weatherninetwothree.utils.extensions.assistedViewModel
-import com.grappim.weatherninetwothree.utils.extensions.color
+import com.grappim.weatherninetwothree.utils.extensions.launchAndRepeatWithViewLifecycle
 import com.grappim.weatherninetwothree.utils.views.SimpleItemDecoration
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.filterNotNull
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -34,7 +29,7 @@ class WeatherDetailsFragment : BaseFragment<FragmentWeatherDetailsBinding>(
     }
     private val currentLocationInfo by lazyArg<CurrentLocationInfo>(ARG_KEY_LOCATION_INFO)
 
-    private val viewModel by assistedViewModel<WeatherDetailsViewModel> {
+    private val viewModel by assistedViewModel {
         weatherDetailsViewModelFactory.create(currentLocationInfo)
     }
 
@@ -45,9 +40,8 @@ class WeatherDetailsFragment : BaseFragment<FragmentWeatherDetailsBinding>(
     }
 
     private fun observeViewModel() {
-        viewLifecycleOwner.lifecycleScope.launch {
+        launchAndRepeatWithViewLifecycle {
             viewModel.weatherDetails
-                .filterNotNull()
                 .collect {
                     weatherAdapter.submitList(it.daily)
                     with(binding) {
@@ -59,6 +53,7 @@ class WeatherDetailsFragment : BaseFragment<FragmentWeatherDetailsBinding>(
                         )
                         tvWeatherType.text = it.currentWeather.description
                         ivWeatherType.load(it.currentWeather.icon)
+                        swipeRefresh.isRefreshing = false
                     }
                 }
         }
@@ -71,7 +66,10 @@ class WeatherDetailsFragment : BaseFragment<FragmentWeatherDetailsBinding>(
                 SimpleItemDecoration(context = requireContext())
             )
             btnBack.setOnClickListener {
-                findNavController().navigateUp()
+                navigationManager.onBackPressed()
+            }
+            swipeRefresh.setOnRefreshListener {
+                viewModel.getWeatherData()
             }
         }
     }

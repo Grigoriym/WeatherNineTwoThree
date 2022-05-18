@@ -1,7 +1,7 @@
 package com.grappim.weatherninetwothree.domain.interactor
 
-import com.grappim.weatherninetwothree.di.IoDispatcher
-import com.grappim.weatherninetwothree.domain.FlowUseCase
+import com.grappim.weatherninetwothree.di.app.IoDispatcher
+import com.grappim.weatherninetwothree.domain.interactor.base.FlowUseCase
 import com.grappim.weatherninetwothree.domain.interactor.utils.Try
 import com.grappim.weatherninetwothree.domain.model.weather.WeatherDetails
 import com.grappim.weatherninetwothree.domain.repository.WeatherRepository

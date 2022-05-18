@@ -7,6 +7,6 @@ sealed class LocationResult {
     ) : LocationResult()
 
     data class Error(
-        val throwable: Throwable?
+        val errorMsg: String
     ) : LocationResult()
 }

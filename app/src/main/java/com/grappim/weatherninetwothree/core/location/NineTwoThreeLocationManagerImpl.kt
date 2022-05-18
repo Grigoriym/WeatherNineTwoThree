@@ -77,7 +77,7 @@ class NineTwoThreeLocationManagerImpl : NineTwoThreeLocationManager {
         } else {
             onResult(
                 LocationResult.Error(
-                    IllegalStateException("Cannot retrieve location data")
+                    errorMsg = "Cannot retrieve location data"
                 )
             )
         }

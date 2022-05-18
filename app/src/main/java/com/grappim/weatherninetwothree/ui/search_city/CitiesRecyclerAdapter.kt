@@ -5,8 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.grappim.weatherninetwothree.databinding.LayoutSearchCityBinding
-import com.grappim.weatherninetwothree.domain.FoundLocation
-import kotlin.properties.Delegates
+import com.grappim.weatherninetwothree.domain.model.location.FoundLocation
 
 class CitiesRecyclerAdapter(
     private val onItemClicked: (FoundLocation) -> Unit

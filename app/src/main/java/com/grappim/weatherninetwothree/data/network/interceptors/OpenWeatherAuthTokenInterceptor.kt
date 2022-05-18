@@ -1,6 +1,6 @@
 package com.grappim.weatherninetwothree.data.network.interceptors
 
-import com.grappim.weatherninetwothree.di.AppBuildConfigProvider
+import com.grappim.weatherninetwothree.di.app.AppBuildConfigProvider
 import okhttp3.HttpUrl
 import okhttp3.Interceptor
 import okhttp3.Request

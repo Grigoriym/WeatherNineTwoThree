@@ -9,9 +9,7 @@ import com.grappim.weatherninetwothree.ui.search_city.CurrentLocationInfo
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
 class WeatherDetailsViewModel @AssistedInject constructor(
@@ -19,9 +17,11 @@ class WeatherDetailsViewModel @AssistedInject constructor(
     @Assisted private val currentLocationInfo: CurrentLocationInfo
 ) : ViewModel() {
 
-    private val _weatherDetails = MutableStateFlow<WeatherDetails?>(null)
-    val weatherDetails: StateFlow<WeatherDetails?>
-        get() = _weatherDetails.asStateFlow()
+    private val _weatherDetails = MutableSharedFlow<WeatherDetails>(
+        replay = 1
+    )
+    val weatherDetails: SharedFlow<WeatherDetails>
+        get() = _weatherDetails.asSharedFlow()
 
     init {
         getWeatherData()

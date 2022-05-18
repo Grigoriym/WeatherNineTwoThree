@@ -1,15 +1,10 @@
 package com.grappim.weatherninetwothree.data.model.weather
 
-
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
 data class Daily(
-    @SerialName("clouds")
-    val clouds: Int,
-    @SerialName("dew_point")
-    val dewPoint: Double,
     @SerialName("dt")
     val dt: Long,
     @SerialName("feels_like")
@@ -22,26 +17,14 @@ data class Daily(
     val moonrise: Int,
     @SerialName("moonset")
     val moonset: Int,
-    @SerialName("pop")
-    val pop: Double,
-    @SerialName("pressure")
-    val pressure: Int,
-    @SerialName("rain")
-    val rain: Double?,
     @SerialName("sunrise")
     val sunrise: Int,
     @SerialName("sunset")
     val sunset: Int,
     @SerialName("temp")
     val temp: Temp,
-    @SerialName("uvi")
-    val uvi: Double,
     @SerialName("weather")
-    val weather: List<WeatherX>,
-    @SerialName("wind_deg")
-    val windDeg: Int,
-    @SerialName("wind_gust")
-    val windGust: Double,
+    val weather: List<Weather>,
     @SerialName("wind_speed")
     val windSpeed: Double
 )

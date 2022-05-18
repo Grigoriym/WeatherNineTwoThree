@@ -1,8 +1,8 @@
 package com.grappim.weatherninetwothree.data.repository
 
 import com.grappim.weatherninetwothree.data.network.service.GeoapifyService
-import com.grappim.weatherninetwothree.di.QualifierGeoapifyService
-import com.grappim.weatherninetwothree.domain.FoundLocation
+import com.grappim.weatherninetwothree.di.app.QualifierGeoapifyService
+import com.grappim.weatherninetwothree.domain.model.location.FoundLocation
 import com.grappim.weatherninetwothree.domain.interactor.SearchLocationUseCase
 import com.grappim.weatherninetwothree.domain.interactor.utils.Try
 import com.grappim.weatherninetwothree.domain.repository.GeocodingAndSearchRepository

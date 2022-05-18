@@ -1,7 +1,7 @@
 package com.grappim.weatherninetwothree.ui.search_city
 
 import androidx.recyclerview.widget.DiffUtil
-import com.grappim.weatherninetwothree.domain.FoundLocation
+import com.grappim.weatherninetwothree.domain.model.location.FoundLocation
 
 class CitiesDiffUtilCallback : DiffUtil.ItemCallback<FoundLocation>() {
     override fun areItemsTheSame(oldItem: FoundLocation, newItem: FoundLocation): Boolean =

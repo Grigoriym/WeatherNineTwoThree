@@ -1,8 +1,8 @@
 package com.grappim.weatherninetwothree.domain.interactor
 
-import com.grappim.weatherninetwothree.di.IoDispatcher
-import com.grappim.weatherninetwothree.domain.FlowUseCase
-import com.grappim.weatherninetwothree.domain.FoundLocation
+import com.grappim.weatherninetwothree.di.app.IoDispatcher
+import com.grappim.weatherninetwothree.domain.interactor.base.FlowUseCase
+import com.grappim.weatherninetwothree.domain.model.location.FoundLocation
 import com.grappim.weatherninetwothree.domain.interactor.utils.Try
 import com.grappim.weatherninetwothree.domain.repository.GeocodingAndSearchRepository
 import kotlinx.coroutines.CoroutineDispatcher

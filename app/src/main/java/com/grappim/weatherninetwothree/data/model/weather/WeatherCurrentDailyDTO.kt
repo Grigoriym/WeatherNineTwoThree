@@ -14,7 +14,5 @@ data class WeatherCurrentDailyDTO(
     @SerialName("lon")
     val lon: Double,
     @SerialName("timezone")
-    val timezone: String,
-    @SerialName("timezone_offset")
-    val timezoneOffset: Int
+    val timezone: String
 )

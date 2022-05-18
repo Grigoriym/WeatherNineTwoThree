@@ -3,11 +3,14 @@ package com.grappim.weatherninetwothree.ui.search_city
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.grappim.weatherninetwothree.domain.FoundLocation
+import com.grappim.weatherninetwothree.core.functional.WhileViewSubscribed
 import com.grappim.weatherninetwothree.domain.interactor.GetCurrentPlaceUseCase
 import com.grappim.weatherninetwothree.domain.interactor.SearchLocationUseCase
 import com.grappim.weatherninetwothree.domain.interactor.utils.Try
-import com.grappim.weatherninetwothree.utils.INPUT_DEBOUNCE
+import com.grappim.weatherninetwothree.domain.model.location.FoundLocation
+import com.grappim.weatherninetwothree.utils.constants.INPUT_DEBOUNCE
+import com.grappim.weatherninetwothree.utils.delegate.boolean
+import com.grappim.weatherninetwothree.utils.delegate.double
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -30,15 +33,20 @@ class SearchCityViewModel @Inject constructor(
             }
             .stateIn(
                 scope = viewModelScope,
-                started = SharingStarted.WhileSubscribed(5000),
+                started = WhileViewSubscribed,
                 initialValue = Try.Initial
             )
 
-    var isButtonOkVisible: Boolean =
-        savedStateHandle[SearchCityFragment.ARG_KEY_BTN_OK_VISIBILITY] ?: false
+    /**
+     * This field is needed to return the button state onBackPressed
+     */
+    var isButtonOkVisible: Boolean by savedStateHandle.boolean(SearchCityFragment.ARG_KEY_BTN_OK_VISIBILITY)
 
-    var latitude: Double? = savedStateHandle[SearchCityFragment.ARG_KEY_LATITUDE]
-    var longitude: Double? = savedStateHandle[SearchCityFragment.ARG_KEY_LATITUDE]
+    var latitude: Double? by savedStateHandle.double(SearchCityFragment.ARG_KEY_LATITUDE)
+    var longitude: Double? by savedStateHandle.double(SearchCityFragment.ARG_KEY_LONGITUDE)
+
+    var isGetLocationClicked: Boolean = false
+    var isLocationSelectedFromList: Boolean = false
 
     private val _foundLocation = MutableSharedFlow<String>()
     val foundLocation: SharedFlow<String>
