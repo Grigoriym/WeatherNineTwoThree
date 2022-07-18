@@ -87,13 +87,12 @@ class WeatherDetailsViewModelTest {
     fun `instantiating viewModel calls getWeatherDataUseCase with success results in Success`() =
         runTest {
             success()
-
             launch {
                 viewModel.weatherDetails.test {
-                    val item = awaitItem()
-                    item shouldBeInstanceOf WeatherDataResult.SuccessResult::class.java
-                    (item as WeatherDataResult.SuccessResult).result shouldBe weatherDetails
-
+                    with(awaitItem()) {
+                        this shouldBeInstanceOf WeatherDataResult.SuccessResult::class.java
+                        (this as WeatherDataResult.SuccessResult).result shouldBe weatherDetails
+                    }
                     cancelAndIgnoreRemainingEvents()
                 }
             }
@@ -101,7 +100,7 @@ class WeatherDetailsViewModelTest {
             runCurrent()
 
             coVerify(exactly = 1) {
-                getWeatherDataUseCaseMock.invoke(WeatherDataParams(LATITUDE, LONGITUDE))
+                getWeatherDataUseCaseMock.invoke(any())
             }
         }
 
