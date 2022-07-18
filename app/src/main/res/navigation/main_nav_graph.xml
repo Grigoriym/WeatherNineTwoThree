@@ -1,22 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
-  xmlns:app="http://schemas.android.com/apk/res-auto"
-  xmlns:tools="http://schemas.android.com/tools"
-  android:id="@+id/main_nav_graph"
-  app:startDestination="@id/fragmentSearchCity">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_nav_graph"
+    app:startDestination="@id/fragmentSearchCity">
 
-  <fragment
-    android:id="@+id/fragmentSearchCity"
-    android:name="com.grappim.weatherninetwothree.ui.search_city.SearchCityFragment"
-    tools:layout="@layout/fragment_search_city">
-    <action
-      android:id="@+id/action_fragmentSearchCity_to_fragmentWeatherDetails"
-      app:destination="@id/fragmentWeatherDetails" />
-  </fragment>
+    <fragment
+        android:id="@+id/fragmentSearchCity"
+        android:name="com.grappim.weatherninetwothree.ui.searchCity.view.SearchCityFragment"
+        tools:layout="@layout/fragment_search_city">
+        <action
+            android:id="@+id/action_fragmentSearchCity_to_fragmentWeatherDetails"
+            app:destination="@id/fragmentWeatherDetails" />
+    </fragment>
 
-  <fragment
-    android:id="@+id/fragmentWeatherDetails"
-    android:name="com.grappim.weatherninetwothree.ui.weather_details.WeatherDetailsFragment"
-    tools:layout="@layout/fragment_weather_details" />
-
+    <fragment
+        android:id="@+id/fragmentWeatherDetails"
+        android:name="com.grappim.weatherninetwothree.ui.weatherDetails.view.WeatherDetailsFragment"
+        tools:layout="@layout/fragment_weather_details" />
 </navigation>

@@ -2,12 +2,11 @@ package com.grappim.weatherninetwothree.data.repository
 
 import com.grappim.weatherninetwothree.data.network.service.GeoapifyService
 import com.grappim.weatherninetwothree.di.app.QualifierGeoapifyService
-import com.grappim.weatherninetwothree.domain.model.location.FoundLocation
-import com.grappim.weatherninetwothree.domain.interactor.SearchLocationUseCase
+import com.grappim.weatherninetwothree.domain.interactor.search_location.SearchLocationParams
 import com.grappim.weatherninetwothree.domain.interactor.utils.Try
+import com.grappim.weatherninetwothree.domain.interactor.utils.runOperationCatching
+import com.grappim.weatherninetwothree.domain.model.location.FoundLocation
 import com.grappim.weatherninetwothree.domain.repository.GeocodingAndSearchRepository
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -16,9 +15,9 @@ class GeocodingAndSearchRepositoryImpl @Inject constructor(
     @QualifierGeoapifyService private val geoapifyService: GeoapifyService
 ) : GeocodingAndSearchRepository {
 
-    override fun searchLocation(
-        params: SearchLocationUseCase.Params
-    ): Flow<Try<List<FoundLocation>>> = flow {
+    override suspend fun searchLocation(
+        params: SearchLocationParams
+    ): Try<List<FoundLocation>, Throwable> = runOperationCatching {
         val result = geoapifyService.searchLocation(
             searchQuery = params.searchQuery
         )
@@ -36,7 +35,6 @@ class GeocodingAndSearchRepositoryImpl @Inject constructor(
                     )
                 )
             }
-        emit(Try.Success(found))
+        found
     }
-
 }

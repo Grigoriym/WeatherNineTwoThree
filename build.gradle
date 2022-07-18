@@ -1,23 +1,86 @@
 buildscript {
-    ext{
-        kotlin_version = '1.6.21'
-    }
+    ext.versions = [
+            'minSdk'    : 21,
+            'compileSdk': 32,
+            'targetSdk' : 32,
+
+            'kotlin'    : [
+                    'core'         : '1.7.10',
+                    'serialization': '1.3.2',
+                    'coroutines'   : '1.6.2'
+            ],
+
+            'androidx'  : [
+                    'fragment'        : '1.5.0',
+                    'core'            : '1.7.0',
+                    'appcompat'       : '1.4.1',
+                    'constraintLayout': '2.1.3',
+                    'lifecycle'       : '2.5.0',
+                    'swiperefresh'    : '1.1.0',
+                    'startup'         : '1.1.1',
+                    'recyclerview'    : '1.2.1',
+                    'navigation'      : '2.5.0'
+            ],
+            'google'    : [
+                    'material': "1.6.1",
+                    'dagger'  : '2.42'
+            ],
+
+            timber      : '5.0.1',
+            coil        : '2.0.0',
+            flowbinding:'1.2.0'
+    ]
+    ext.deps = [
+            timber    : "com.jakewharton.timber:timber:${versions.timber}",
+            coil      : "io.coil-kt:coil:${versions.coil}",
+            flowbinding:"io.github.reactivecircus.flowbinding:flowbinding-android:${versions.flowbinding}",
+
+            kotlin    : [
+                    'coroutines'   : "org.jetbrains.kotlinx:kotlinx-coroutines-android:${versions.kotlin.coroutines}",
+                    'serialization': "org.jetbrains.kotlinx:kotlinx-serialization-json:${versions.kotlin.serialization}"
+            ],
+            androidx  : [
+                    'fragment'        : "androidx.fragment:fragment-ktx:$versions.androidx.fragment",
+                    'appcompat'       : "androidx.appcompat:appcompat:${versions.androidx.appcompat}",
+                    'core'            : "androidx.core:core-ktx:${versions.androidx.core}",
+                    'constraintLayout': "androidx.constraintlayout:constraintlayout:${versions.androidx.constraintLayout}",
+                    'swiperefresh'    : "androidx.swiperefreshlayout:swiperefreshlayout:${versions.androidx.swiperefresh}",
+                    'startup'         : "androidx.startup:startup-runtime:${versions.androidx.startup}",
+                    'recyclerview'    : "androidx.recyclerview:recyclerview:${versions.androidx.recyclerview}"
+            ],
+            navigation: [
+                    fragment: "androidx.navigation:navigation-fragment-ktx:${versions.androidx.navigation}",
+                    ui      : "androidx.navigation:navigation-ui-ktx:${versions.androidx.navigation}"
+            ],
+            google    : [
+                    'material'    : "com.google.android.material:material:${versions.google.material}",
+                    'hiltandroid' : "com.google.dagger:hilt-android:${versions.google.dagger}",
+                    'hiltcompiler': "com.google.dagger:hilt-compiler:${versions.google.dagger}"
+            ],
+            lifecycle : [
+                    'livedata' : "androidx.lifecycle:lifecycle-livedata-ktx:${versions.androidx.lifecycle}",
+                    'viewmodel': "androidx.lifecycle:lifecycle-viewmodel-ktx:${versions.androidx.lifecycle}",
+                    'runtime'  : "androidx.lifecycle:lifecycle-runtime-ktx:${versions.androidx.lifecycle}",
+            ],
+    ]
 
     repositories {
         google()
         mavenCentral()
     }
     dependencies {
-        classpath "com.android.tools.build:gradle:7.2.0"
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlin_version}"
-
         classpath 'com.google.dagger:hilt-android-gradle-plugin:2.42'
 
-        classpath "org.jetbrains.kotlin:kotlin-serialization:${kotlin_version}"
+        classpath "org.jetbrains.kotlin:kotlin-serialization:${versions.kotlin.core}"
 
-        def nav_version = '2.4.2'
-        classpath "androidx.navigation:navigation-safe-args-gradle-plugin:$nav_version"
+        classpath "androidx.navigation:navigation-safe-args-gradle-plugin:${versions.androidx.navigation}"
     }
+}
+
+plugins {
+    id 'com.android.application' version '7.2.1' apply false
+    id 'com.android.library' version '7.2.1' apply false
+    id 'org.jetbrains.kotlin.android' version '1.7.10' apply false
 }
 
 task clean(type: Delete) {

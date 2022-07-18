@@ -1,14 +1,13 @@
 package com.grappim.weatherninetwothree.domain.repository
 
-import com.grappim.weatherninetwothree.domain.model.location.FoundLocation
-import com.grappim.weatherninetwothree.domain.interactor.SearchLocationUseCase
+import com.grappim.weatherninetwothree.domain.interactor.search_location.SearchLocationParams
 import com.grappim.weatherninetwothree.domain.interactor.utils.Try
-import kotlinx.coroutines.flow.Flow
+import com.grappim.weatherninetwothree.domain.model.location.FoundLocation
 
 interface GeocodingAndSearchRepository {
 
-    fun searchLocation(
-        params: SearchLocationUseCase.Params
-    ): Flow<Try<List<FoundLocation>>>
+    suspend fun searchLocation(
+        params: SearchLocationParams
+    ): Try<List<FoundLocation>, Throwable>
 
 }

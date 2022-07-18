@@ -6,14 +6,14 @@ import com.grappim.weatherninetwothree.di.app.AppBuildConfigProvider
 import com.grappim.weatherninetwothree.di.app.DateTimeStandard
 import com.grappim.weatherninetwothree.di.app.DecimalWholeNumberFormat
 import com.grappim.weatherninetwothree.di.app.QualifierWeatherService
-import com.grappim.weatherninetwothree.domain.interactor.GetCurrentPlaceUseCase
-import com.grappim.weatherninetwothree.domain.interactor.GetWeatherDataUseCase
+import com.grappim.weatherninetwothree.domain.interactor.weather_data.GetWeatherDataUseCaseImpl
+import com.grappim.weatherninetwothree.domain.interactor.get_current_place.GetCurrentPlaceParams
 import com.grappim.weatherninetwothree.domain.interactor.utils.Try
+import com.grappim.weatherninetwothree.domain.interactor.utils.runOperationCatching
+import com.grappim.weatherninetwothree.domain.interactor.weather_data.WeatherDataParams
 import com.grappim.weatherninetwothree.domain.model.location.CurrentLocation
 import com.grappim.weatherninetwothree.domain.model.weather.WeatherDetails
 import com.grappim.weatherninetwothree.domain.repository.WeatherRepository
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
 import java.text.DecimalFormat
 import java.time.format.DateTimeFormatter
 import javax.inject.Inject
@@ -27,10 +27,9 @@ class WeatherRepositoryImpl @Inject constructor(
     @DateTimeStandard private val dtStandard: DateTimeFormatter
 ) : WeatherRepository {
 
-    override fun getWeather(
-        params: GetWeatherDataUseCase.Params
-    ): Flow<Try<WeatherDetails>> = flow {
-        emit(Try.Loading)
+    override suspend fun getWeather(
+        params: WeatherDataParams
+    ): Try<WeatherDetails, Throwable> = runOperationCatching {
         val response = weatherService.getCurrentAndDailyWeather(
             latitude = params.latitude,
             longitude = params.longitude
@@ -40,18 +39,17 @@ class WeatherRepositoryImpl @Inject constructor(
             dfWholeNumber = dfWholeNumber,
             dtStandard = dtStandard
         )
-        emit(Try.Success(domain))
+        domain
     }
 
-    override fun getCurrentLocation(
-        params: GetCurrentPlaceUseCase.Params
-    ): Flow<Try<CurrentLocation>> = flow {
-        emit(Try.Loading)
+    override suspend fun getCurrentLocation(
+        params: GetCurrentPlaceParams
+    ): Try<CurrentLocation, Throwable> = runOperationCatching {
         val response = weatherService.getReverseGeocoding(
             latitude = params.latitude,
             longitude = params.longitude
         )
-        emit(Try.Success(response.first().toDomain()))
+        response.first().toDomain()
     }
 
 }

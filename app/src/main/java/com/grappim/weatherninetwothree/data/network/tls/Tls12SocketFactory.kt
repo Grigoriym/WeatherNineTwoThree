@@ -18,6 +18,10 @@ private const val OPEN_WEATHER_CERTIFICATE_FILE_NAME = "openweathermap-org.pem"
 private const val GEO_IPIFY_ORG_FILE_NAME = "sni-cloudflaressl-com.pem"
 private const val CERTIFICATE_TYPE = "X.509"
 
+/**
+ * For the open weather and geo ipify to work correctly on API 21, we have
+ * to use the certificates which I took from their web sites in the browser
+ */
 class Tls12SocketFactory(private val delegate: SSLSocketFactory) : SSLSocketFactory() {
     companion object {
 

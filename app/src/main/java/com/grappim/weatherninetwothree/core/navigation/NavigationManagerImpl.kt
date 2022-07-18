@@ -20,10 +20,7 @@ class NavigationManagerImpl @Inject constructor(
     override fun goToDetails(args: Bundle?) {
         val navOptions = NavOptions.Builder()
             .apply {
-                setEnterAnim(R.anim.enter_from_right)
-                setExitAnim(R.anim.exit_to_left)
-                setPopEnterAnim(R.anim.pop_enter_from_left)
-                setPopExitAnim(R.anim.pop_exit_from_right)
+                addDefaultAnimations()
             }
             .build()
         navController.navigate(
@@ -31,7 +28,13 @@ class NavigationManagerImpl @Inject constructor(
             args,
             navOptions
         )
+    }
 
+    private fun NavOptions.Builder.addDefaultAnimations() {
+        setEnterAnim(R.anim.enter_from_right)
+        setExitAnim(R.anim.exit_to_left)
+        setPopEnterAnim(R.anim.pop_enter_from_left)
+        setPopExitAnim(R.anim.pop_exit_from_right)
     }
 
 }
