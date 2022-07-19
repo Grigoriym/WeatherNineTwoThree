@@ -1,4 +1,4 @@
-package com.grappim.weatherninetwothree.domain.interactor.weather_data
+package com.grappim.weatherninetwothree.domain.interactor.weatherData
 
 import com.grappim.weatherninetwothree.domain.interactor.utils.Try
 import com.grappim.weatherninetwothree.domain.model.weather.WeatherDetails

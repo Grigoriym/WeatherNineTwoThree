@@ -1,4 +1,4 @@
-package com.grappim.weatherninetwothree.domain.interactor.get_current_place
+package com.grappim.weatherninetwothree.domain.interactor.getCurrentPlace
 
 import com.grappim.weatherninetwothree.domain.interactor.utils.Try
 import com.grappim.weatherninetwothree.domain.model.location.CurrentLocation

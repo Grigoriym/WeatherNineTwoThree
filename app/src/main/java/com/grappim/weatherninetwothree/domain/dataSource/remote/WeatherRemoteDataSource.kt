@@ -1,19 +1,17 @@
-package com.grappim.weatherninetwothree.domain.repository
+package com.grappim.weatherninetwothree.domain.dataSource.remote
 
+import com.grappim.weatherninetwothree.data.model.geocoding.CurrentLocationDTO
+import com.grappim.weatherninetwothree.data.model.weather.WeatherCurrentDailyDTO
 import com.grappim.weatherninetwothree.domain.interactor.getCurrentPlace.GetCurrentPlaceParams
 import com.grappim.weatherninetwothree.domain.interactor.utils.Try
 import com.grappim.weatherninetwothree.domain.interactor.weatherData.WeatherDataParams
-import com.grappim.weatherninetwothree.domain.model.location.CurrentLocation
-import com.grappim.weatherninetwothree.domain.model.weather.WeatherDetails
 
-interface WeatherRepository {
-
+interface WeatherRemoteDataSource {
     suspend fun getWeather(
         params: WeatherDataParams
-    ): Try<WeatherDetails, Throwable>
+    ): Try<WeatherCurrentDailyDTO, Throwable>
 
     suspend fun getCurrentLocation(
         params: GetCurrentPlaceParams
-    ): Try<CurrentLocation, Throwable>
-
+    ): Try<List<CurrentLocationDTO>, Throwable>
 }

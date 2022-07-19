@@ -3,10 +3,10 @@ package com.grappim.weatherninetwothree.ui.searchCity.viewModel
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.grappim.weatherninetwothree.domain.interactor.get_current_place.GetCurrentPlaceParams
-import com.grappim.weatherninetwothree.domain.interactor.get_current_place.GetCurrentPlaceUseCase
-import com.grappim.weatherninetwothree.domain.interactor.search_location.SearchLocationParams
-import com.grappim.weatherninetwothree.domain.interactor.search_location.SearchLocationUseCase
+import com.grappim.weatherninetwothree.domain.interactor.getCurrentPlace.GetCurrentPlaceParams
+import com.grappim.weatherninetwothree.domain.interactor.getCurrentPlace.GetCurrentPlaceUseCase
+import com.grappim.weatherninetwothree.domain.interactor.searchLocation.SearchLocationParams
+import com.grappim.weatherninetwothree.domain.interactor.searchLocation.SearchLocationUseCase
 import com.grappim.weatherninetwothree.domain.interactor.utils.Try
 import com.grappim.weatherninetwothree.ui.searchCity.model.GetCurrentLocationResult
 import com.grappim.weatherninetwothree.ui.searchCity.model.SearchLocationResult

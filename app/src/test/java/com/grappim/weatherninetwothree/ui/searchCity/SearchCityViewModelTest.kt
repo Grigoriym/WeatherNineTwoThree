@@ -1,13 +1,12 @@
 package com.grappim.weatherninetwothree.ui.searchCity
 
 import androidx.lifecycle.SavedStateHandle
-import com.grappim.weatherninetwothree.domain.interactor.get_current_place.GetCurrentPlaceUseCase
-import com.grappim.weatherninetwothree.domain.interactor.search_location.SearchLocationUseCase
+import com.grappim.weatherninetwothree.domain.interactor.getCurrentPlace.GetCurrentPlaceUseCase
+import com.grappim.weatherninetwothree.domain.interactor.searchLocation.SearchLocationUseCase
 import com.grappim.weatherninetwothree.ui.searchCity.viewModel.SearchCityViewModel
 import com.grappim.weatherninetwothree.util.CoroutineRule
 import io.mockk.MockKAnnotations
 import io.mockk.impl.annotations.MockK
-import kotlinx.coroutines.test.runTest
 import org.amshove.kluent.shouldBeEqualTo
 import org.junit.Before
 import org.junit.Rule

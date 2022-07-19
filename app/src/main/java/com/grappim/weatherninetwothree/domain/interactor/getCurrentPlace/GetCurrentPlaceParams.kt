@@ -1,4 +1,4 @@
-package com.grappim.weatherninetwothree.domain.interactor.get_current_place
+package com.grappim.weatherninetwothree.domain.interactor.getCurrentPlace
 
 data class GetCurrentPlaceParams(
     val longitude: Double,

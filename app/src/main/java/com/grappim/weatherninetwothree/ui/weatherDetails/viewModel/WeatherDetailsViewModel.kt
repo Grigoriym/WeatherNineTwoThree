@@ -3,8 +3,8 @@ package com.grappim.weatherninetwothree.ui.weatherDetails.viewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.grappim.weatherninetwothree.domain.interactor.utils.Try
-import com.grappim.weatherninetwothree.domain.interactor.weather_data.GetWeatherDataUseCase
-import com.grappim.weatherninetwothree.domain.interactor.weather_data.WeatherDataParams
+import com.grappim.weatherninetwothree.domain.interactor.weatherData.GetWeatherDataUseCase
+import com.grappim.weatherninetwothree.domain.interactor.weatherData.WeatherDataParams
 import com.grappim.weatherninetwothree.ui.searchCity.model.CurrentLocationInfo
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory

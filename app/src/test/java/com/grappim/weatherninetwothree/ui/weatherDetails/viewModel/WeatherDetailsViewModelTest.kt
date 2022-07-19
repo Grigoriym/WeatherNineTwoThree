@@ -2,8 +2,8 @@ package com.grappim.weatherninetwothree.ui.weatherDetails.viewModel
 
 import app.cash.turbine.test
 import com.grappim.weatherninetwothree.domain.interactor.utils.Try
-import com.grappim.weatherninetwothree.domain.interactor.weather_data.GetWeatherDataUseCase
-import com.grappim.weatherninetwothree.domain.interactor.weather_data.WeatherDataParams
+import com.grappim.weatherninetwothree.domain.interactor.weatherData.GetWeatherDataUseCase
+import com.grappim.weatherninetwothree.domain.interactor.weatherData.WeatherDataParams
 import com.grappim.weatherninetwothree.domain.model.weather.CurrentWeather
 import com.grappim.weatherninetwothree.domain.model.weather.DailyWeather
 import com.grappim.weatherninetwothree.domain.model.weather.WeatherDetails

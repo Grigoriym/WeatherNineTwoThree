@@ -2,7 +2,7 @@ package com.grappim.weatherninetwothree.data.repository
 
 import com.grappim.weatherninetwothree.data.network.service.GeoapifyService
 import com.grappim.weatherninetwothree.di.app.QualifierGeoapifyService
-import com.grappim.weatherninetwothree.domain.interactor.search_location.SearchLocationParams
+import com.grappim.weatherninetwothree.domain.interactor.searchLocation.SearchLocationParams
 import com.grappim.weatherninetwothree.domain.interactor.utils.Try
 import com.grappim.weatherninetwothree.domain.interactor.utils.runOperationCatching
 import com.grappim.weatherninetwothree.domain.model.location.FoundLocation

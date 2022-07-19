@@ -1,11 +1,11 @@
 package com.grappim.weatherninetwothree.di.app
 
-import com.grappim.weatherninetwothree.domain.interactor.get_current_place.GetCurrentPlaceUseCase
-import com.grappim.weatherninetwothree.domain.interactor.get_current_place.GetCurrentPlaceUseCaseImpl
-import com.grappim.weatherninetwothree.domain.interactor.search_location.SearchLocationUseCase
-import com.grappim.weatherninetwothree.domain.interactor.search_location.SearchLocationUseCaseImpl
-import com.grappim.weatherninetwothree.domain.interactor.weather_data.GetWeatherDataUseCase
-import com.grappim.weatherninetwothree.domain.interactor.weather_data.GetWeatherDataUseCaseImpl
+import com.grappim.weatherninetwothree.domain.interactor.getCurrentPlace.GetCurrentPlaceUseCase
+import com.grappim.weatherninetwothree.domain.interactor.getCurrentPlace.GetCurrentPlaceUseCaseImpl
+import com.grappim.weatherninetwothree.domain.interactor.searchLocation.SearchLocationUseCase
+import com.grappim.weatherninetwothree.domain.interactor.searchLocation.SearchLocationUseCaseImpl
+import com.grappim.weatherninetwothree.domain.interactor.weatherData.GetWeatherDataUseCase
+import com.grappim.weatherninetwothree.domain.interactor.weatherData.GetWeatherDataUseCaseImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn

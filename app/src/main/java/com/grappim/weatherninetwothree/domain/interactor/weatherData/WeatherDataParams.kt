@@ -1,4 +1,4 @@
-package com.grappim.weatherninetwothree.domain.interactor.weather_data
+package com.grappim.weatherninetwothree.domain.interactor.weatherData
 
 data class WeatherDataParams(
     val latitude: Double,

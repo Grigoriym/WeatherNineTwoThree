@@ -1,4 +1,4 @@
-package com.grappim.weatherninetwothree.domain.interactor.search_location
+package com.grappim.weatherninetwothree.domain.interactor.searchLocation
 
 import com.grappim.weatherninetwothree.domain.interactor.utils.Try
 import com.grappim.weatherninetwothree.domain.model.location.FoundLocation
