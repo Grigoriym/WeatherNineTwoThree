@@ -1,8 +1,10 @@
 package com.grappim.weatherninetwothree.di.app
 
 import com.grappim.weatherninetwothree.data.repository.GeocodingAndSearchRepositoryImpl
+import com.grappim.weatherninetwothree.data.repository.OptionsRepositoryImpl
 import com.grappim.weatherninetwothree.data.repository.WeatherRepositoryImpl
 import com.grappim.weatherninetwothree.domain.repository.GeocodingAndSearchRepository
+import com.grappim.weatherninetwothree.domain.repository.OptionsRepository
 import com.grappim.weatherninetwothree.domain.repository.WeatherRepository
 import dagger.Binds
 import dagger.Module
@@ -21,5 +23,10 @@ interface RepositoryModule {
     fun bindGeocodingAndSearchRepository(
         geocodingAndSearchRepositoryImpl: GeocodingAndSearchRepositoryImpl
     ): GeocodingAndSearchRepository
+
+    @Binds
+    fun bindOptionsRepository(
+        optionsRepositoryImpl: OptionsRepositoryImpl
+    ): OptionsRepository
 
 }

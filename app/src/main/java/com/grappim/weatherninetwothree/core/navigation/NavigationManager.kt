@@ -8,4 +8,6 @@ interface NavigationManager {
 
     fun onBackPressed()
 
+    fun goToOptionsFromSearch()
+
 }

@@ -37,15 +37,29 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnSearch"
-        style="@style/Widget.NineTwoThree.Button.IconOnly.Search"
+        style="@style/Widget.NineTwoThree.Button.IconOnly"
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:layout_marginEnd="16dp"
         android:elevation="8dp"
         android:translationZ="8dp"
+        app:icon="@drawable/ic_pinpoint"
         app:layout_constraintBottom_toBottomOf="@+id/cardCity"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/cardCity" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnOptions"
+        style="@style/Widget.NineTwoThree.Button.IconOnly"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:elevation="8dp"
+        android:translationZ="8dp"
+        app:icon="@drawable/ic_settings_applications"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btnSearch" />
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cardPlaces"

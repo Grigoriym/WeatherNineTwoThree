@@ -9,3 +9,4 @@ Some problems I bumped into:
    3) Correct behavior on onBackPressed from details
    4) Correct behavior on APIs: 21, 23, 26, 30, 31
 3) SharedFlow with replay=1 grants us the ability to repeat the request and send the data to UI on config changes, etc. while ignoring StateFlow equals() functionality to send the object if it is equals to an old one.
+4) Did you know that if you have a DialogFragment and the xml looks like CardView->ConstraintLayout->... the view will not be shown if the contents of the ConstraintLayout are small, that is why you need to wrap the ConstraintLayout with RelativeLayout

@@ -3,10 +3,12 @@ package com.grappim.weatherninetwothree.ui.weatherDetails.view
 import android.os.Bundle
 import android.view.View
 import androidx.core.os.bundleOf
+import androidx.fragment.app.Fragment
 import coil.load
 import com.grappim.weatherninetwothree.R
-import com.grappim.weatherninetwothree.core.base.BaseFragment
+import com.grappim.weatherninetwothree.core.navigation.NavigationManager
 import com.grappim.weatherninetwothree.databinding.FragmentWeatherDetailsBinding
+import com.grappim.weatherninetwothree.domain.model.base.TemperatureUnit
 import com.grappim.weatherninetwothree.ui.searchCity.model.CurrentLocationInfo
 import com.grappim.weatherninetwothree.ui.weatherDetails.adapter.WeatherDetailsAdapter
 import com.grappim.weatherninetwothree.ui.weatherDetails.viewModel.WeatherDataResult
@@ -14,24 +16,28 @@ import com.grappim.weatherninetwothree.ui.weatherDetails.viewModel.WeatherDetail
 import com.grappim.weatherninetwothree.utils.delegate.lazyArg
 import com.grappim.weatherninetwothree.utils.extensions.assistedViewModel
 import com.grappim.weatherninetwothree.utils.extensions.launchAndRepeatWithViewLifecycle
+import com.grappim.weatherninetwothree.utils.extensions.viewBinding
 import com.grappim.weatherninetwothree.utils.views.SimpleItemDecoration
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class WeatherDetailsFragment : BaseFragment<FragmentWeatherDetailsBinding>(
-    FragmentWeatherDetailsBinding::inflate
-) {
+class WeatherDetailsFragment : Fragment(R.layout.fragment_weather_details) {
+
+    @Inject
+    lateinit var navigationManager: NavigationManager
 
     @Inject
     lateinit var weatherDetailsViewModelFactory: WeatherDetailsViewModel.WeatherDetailsViewModelFactory
 
+    private val binding by viewBinding(FragmentWeatherDetailsBinding::bind)
+
     private val weatherAdapter: WeatherDetailsAdapter by lazy {
-        WeatherDetailsAdapter()
+        WeatherDetailsAdapter(viewModel.temperatureUnit)
     }
     private val currentLocationInfo by lazyArg<CurrentLocationInfo>(ARG_KEY_LOCATION_INFO)
 
-    private val viewModel by assistedViewModel {
+    private val viewModel: WeatherDetailsViewModel by assistedViewModel {
         weatherDetailsViewModelFactory.create(currentLocationInfo)
     }
 
@@ -55,13 +61,19 @@ class WeatherDetailsFragment : BaseFragment<FragmentWeatherDetailsBinding>(
                 with(binding) {
                     tvCity.text = currentLocationInfo.name
                     tvDate.text = result.currentWeather.currentTime
-                    tvCurrentTemp.text = getString(
-                        R.string.temp,
-                        result.currentWeather.temp
-                    )
+
                     tvWeatherType.text = result.currentWeather.description
                     ivWeatherType.load(result.currentWeather.icon)
                     swipeRefresh.isRefreshing = false
+                    
+                    val currentTempString = when (viewModel.temperatureUnit) {
+                        TemperatureUnit.F -> R.string.temp_f
+                        TemperatureUnit.C -> R.string.temp_c
+                    }
+                    tvCurrentTemp.text = getString(
+                        currentTempString,
+                        result.currentWeather.temp
+                    )
                 }
             }
             is WeatherDataResult.ErrorResult -> {

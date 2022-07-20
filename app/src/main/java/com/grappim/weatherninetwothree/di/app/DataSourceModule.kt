@@ -1,6 +1,8 @@
 package com.grappim.weatherninetwothree.di.app
 
+import com.grappim.weatherninetwothree.data.dataSource.local.LocalOptionsDataSourceImpl
 import com.grappim.weatherninetwothree.data.dataSource.remote.WeatherRemoteDataSourceImpl
+import com.grappim.weatherninetwothree.domain.dataSource.local.LocalOptionsDataSource
 import com.grappim.weatherninetwothree.domain.dataSource.remote.WeatherRemoteDataSource
 import dagger.Binds
 import dagger.Module
@@ -14,5 +16,10 @@ interface DataSourceModule {
     fun bindWeatherRemoteDataSource(
         weatherRemoteDataSourceImpl: WeatherRemoteDataSourceImpl
     ): WeatherRemoteDataSource
+
+    @Binds
+    fun bindLocalOptionsDataSource(
+        localOptionsDataSourceImpl: LocalOptionsDataSourceImpl
+    ): LocalOptionsDataSource
 
 }

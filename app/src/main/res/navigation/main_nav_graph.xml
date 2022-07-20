@@ -12,10 +12,18 @@
         <action
             android:id="@+id/action_fragmentSearchCity_to_fragmentWeatherDetails"
             app:destination="@id/fragmentWeatherDetails" />
+        <action
+            android:id="@+id/action_fragmentSearchCity_to_fragmentOptions"
+            app:destination="@id/fragmentOptions" />
     </fragment>
 
     <fragment
         android:id="@+id/fragmentWeatherDetails"
         android:name="com.grappim.weatherninetwothree.ui.weatherDetails.view.WeatherDetailsFragment"
         tools:layout="@layout/fragment_weather_details" />
+
+    <dialog
+        android:id="@+id/fragmentOptions"
+        android:name="com.grappim.weatherninetwothree.ui.options.view.OptionsDialogFragment"
+        tools:layout="@layout/fragment_options" />
 </navigation>

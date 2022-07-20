@@ -9,14 +9,15 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.snackbar.Snackbar
 import com.grappim.weatherninetwothree.R
-import com.grappim.weatherninetwothree.core.base.BaseFragment
 import com.grappim.weatherninetwothree.core.location.LocationResult
 import com.grappim.weatherninetwothree.core.location.NineTwoThreeLocationManager
 import com.grappim.weatherninetwothree.core.location.NineTwoThreeLocationManagerImpl
+import com.grappim.weatherninetwothree.core.navigation.NavigationManager
 import com.grappim.weatherninetwothree.databinding.FragmentSearchCityBinding
 import com.grappim.weatherninetwothree.domain.model.location.FoundLocation
 import com.grappim.weatherninetwothree.ui.searchCity.adapter.CitiesRecyclerAdapter
@@ -29,6 +30,7 @@ import com.grappim.weatherninetwothree.utils.extensions.hideSoftKeyboard
 import com.grappim.weatherninetwothree.utils.extensions.isPermissionGranted
 import com.grappim.weatherninetwothree.utils.extensions.launchAndRepeatWithViewLifecycle
 import com.grappim.weatherninetwothree.utils.extensions.showSnackbar
+import com.grappim.weatherninetwothree.utils.extensions.viewBinding
 import com.grappim.weatherninetwothree.utils.permission.locationPermissions
 import com.grappim.weatherninetwothree.utils.views.SimpleDividerItemDecoration
 import dagger.hilt.android.AndroidEntryPoint
@@ -37,11 +39,15 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import reactivecircus.flowbinding.android.widget.afterTextChanges
+import javax.inject.Inject
 
 @AndroidEntryPoint
-class SearchCityFragment : BaseFragment<FragmentSearchCityBinding>(
-    FragmentSearchCityBinding::inflate
-) {
+class SearchCityFragment : Fragment(R.layout.fragment_search_city) {
+
+    @Inject
+    lateinit var navigationManager: NavigationManager
+
+    private val viewBinding by viewBinding(FragmentSearchCityBinding::bind)
 
     private val viewModel by viewModels<SearchCityViewModel>()
 
@@ -64,7 +70,7 @@ class SearchCityFragment : BaseFragment<FragmentSearchCityBinding>(
                 initLocationUpdates()
             }
             else -> {
-                binding.root.showSnackbar(
+                viewBinding.root.showSnackbar(
                     R.string.location_permission_denied,
                     Snackbar.LENGTH_SHORT,
                     R.string.ok
@@ -102,7 +108,7 @@ class SearchCityFragment : BaseFragment<FragmentSearchCityBinding>(
 
             submitListToAdapter(foundLocationList)
         } else {
-            binding.btnOk.isVisible = viewModel.isButtonOkVisible
+            viewBinding.btnOk.isVisible = viewModel.isButtonOkVisible
         }
     }
 
@@ -146,7 +152,7 @@ class SearchCityFragment : BaseFragment<FragmentSearchCityBinding>(
     }
 
     private fun submitListToAdapter(list: List<FoundLocation>) {
-        binding.cardPlaces.fadeVisibility(list.isNotEmpty())
+        viewBinding.cardPlaces.fadeVisibility(list.isNotEmpty())
         adapter.submitList(list)
     }
 
@@ -156,7 +162,7 @@ class SearchCityFragment : BaseFragment<FragmentSearchCityBinding>(
      * do nothing if we paste location from recyclerView or from getCurrentPlace
      */
     private fun setEditCityText(text: String) {
-        with(binding) {
+        with(viewBinding) {
             val focused = etCity.hasFocus()
             if (focused) {
                 etCity.clearFocus()
@@ -169,15 +175,15 @@ class SearchCityFragment : BaseFragment<FragmentSearchCityBinding>(
     }
 
     private fun initViews() {
-        with(binding) {
+        with(viewBinding) {
             etCity.afterTextChanges()
                 .skipInitialValue()
                 .filter {
                     it.editable?.toString()?.isNotEmpty() == true
                 }
                 .onEach { text ->
-                    val etTag = binding.etCity.tag
-                    val etHasFocus = binding.etCity.hasFocus()
+                    val etTag = viewBinding.etCity.tag
+                    val etHasFocus = viewBinding.etCity.hasFocus()
                     if (etTag == null && etHasFocus) {
                         viewModel.searchLocation(text.editable?.toString()!!)
                         setOkButtonVisibility(false)
@@ -213,6 +219,9 @@ class SearchCityFragment : BaseFragment<FragmentSearchCityBinding>(
             btnSearch.setOnClickListener {
                 launchLocationManager()
             }
+            btnOptions.setOnClickListener {
+                navigationManager.goToOptionsFromSearch()
+            }
 
             rvPlaces.addItemDecoration(SimpleDividerItemDecoration(requireContext()))
             rvPlaces.adapter = adapter
@@ -229,19 +238,19 @@ class SearchCityFragment : BaseFragment<FragmentSearchCityBinding>(
 
     private fun clearAdapter() {
         adapter.submitList(emptyList())
-        binding.cardPlaces.fadeVisibility(false)
+        viewBinding.cardPlaces.fadeVisibility(false)
     }
 
     private fun setOkButtonVisibility(isVisible: Boolean) {
         viewModel.isButtonOkVisible = isVisible
-        binding.btnOk.isVisible = isVisible
+        viewBinding.btnOk.isVisible = isVisible
     }
 
     private fun goToWeatherDetails() {
         hideSoftKeyboard()
         navigationManager.goToDetails(
             WeatherDetailsFragment.getBundleForDetails(
-                name = binding.etCity.text.toString(),
+                name = viewBinding.etCity.text.toString(),
                 longitude = requireNotNull(viewModel.longitude),
                 latitude = requireNotNull(viewModel.latitude)
             )
@@ -261,7 +270,7 @@ class SearchCityFragment : BaseFragment<FragmentSearchCityBinding>(
         if (shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_COARSE_LOCATION)
             || shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION)
         ) {
-            binding.root.showSnackbar(
+            viewBinding.root.showSnackbar(
                 R.string.location_permission_needed,
                 Snackbar.LENGTH_INDEFINITE,
                 R.string.ok
@@ -269,7 +278,7 @@ class SearchCityFragment : BaseFragment<FragmentSearchCityBinding>(
                 launchLocationPermissionRequest()
             }
         } else {
-            binding.root.showSnackbar(
+            viewBinding.root.showSnackbar(
                 R.string.location_permission_not_available,
                 Snackbar.LENGTH_LONG,
                 R.string.ok
@@ -309,7 +318,7 @@ class SearchCityFragment : BaseFragment<FragmentSearchCityBinding>(
                 viewModel.getCurrentPlace()
             }
             is LocationResult.Error -> {
-                binding.root.showSnackbar(
+                viewBinding.root.showSnackbar(
                     msg = locationResult.errorMsg
                 )
             }
