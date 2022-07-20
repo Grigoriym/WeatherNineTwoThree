@@ -30,7 +30,7 @@ android {
 }
 
 dependencies {
-    implementation(project(":core:ui"))
+    implementation(project(":uikit"))
 
     implementation deps.kotlin.coroutines
     implementation deps.kotlin.serialization
@@ -59,51 +59,31 @@ dependencies {
     implementation deps.google.hiltandroid
     kapt deps.google.hiltcompiler
 
-    implementation 'nl.bryanderidder:themed-toggle-button-group:1.4.1'
+    implementation deps.google.location
 
-    def okhttp = "5.0.0-alpha.7"
-    implementation "com.squareup.retrofit2:retrofit:2.9.0"
-    implementation "com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.8.0"
-    implementation "com.squareup.okhttp3:okhttp:$okhttp"
-    implementation "com.squareup.okhttp3:logging-interceptor:$okhttp"
+    implementation deps.toggleButtonGroup
 
-    def chucker_version = "3.5.2"
-    debugImplementation "com.github.chuckerteam.chucker:library:$chucker_version"
-    releaseImplementation "com.github.chuckerteam.chucker:library-no-op:$chucker_version"
+    implementation deps.retrofit
+    implementation deps.retrofitKotlinSerialization
+    implementation deps.okhttp.core
+    implementation deps.okhttp.logging
+
+    debugImplementation deps.chucker.core
+    releaseImplementation deps.chucker.noop
 
     implementation deps.coil
-    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:1.1.5")
-
-    def junit_version = '4.13.2'
-    def ext_junit_version = '1.1.3'
-    def espresso_version = '3.4.0'
-    def coroutines_test_version = '1.6.2'
-    def mockito_kotlin_version = '4.0.0'
-    def mockito_android_version = '4.3.1'
-    def turbine = '0.8.0'
-    def android_core_testing = '2.1.0'
-
-    def mockk = '1.12.4'
-    testImplementation "io.mockk:mockk:${mockk}"
-    testImplementation "io.mockk:mockk-agent-jvm:${mockk}"
-    androidTestImplementation "io.mockk:mockk-android:${mockk}"
-    androidTestImplementation "io.mockk:mockk-agent-jvm:${mockk}"
-
-    def kluent = '1.68'
-    testImplementation "org.amshove.kluent:kluent-android:${kluent}"
+    coreLibraryDesugaring(deps.desugar)
 
     // Test
-    testImplementation "junit:junit:$junit_version"
-    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutines_test_version"
-    testImplementation "androidx.arch.core:core-testing:$android_core_testing"
-    testImplementation "org.mockito.kotlin:mockito-kotlin:$mockito_kotlin_version"
-    testImplementation "com.squareup.okhttp3:mockwebserver:$okhttp"
-    testImplementation "app.cash.turbine:turbine:$turbine"
+    testImplementation deps.junit
+    testImplementation deps.kotlin.coroutinesTest
+    testImplementation deps.androidx.coreTesting
+    testImplementation deps.okhttp.mockWebServer
+    testImplementation deps.turbine
+    testImplementation deps.mockk.core
+    testImplementation deps.kluent
+    testImplementation(project(":test-shared"))
 
     // Android Test
-    androidTestImplementation "androidx.test.ext:junit:$ext_junit_version"
-    androidTestImplementation "androidx.test.espresso:espresso-core:$espresso_version"
-    androidTestImplementation "androidx.arch.core:core-testing:$android_core_testing"
-    androidTestImplementation "org.mockito:mockito-android:$mockito_android_version"
-    androidTestImplementation "org.mockito.kotlin:mockito-kotlin:$mockito_kotlin_version"
+    androidTestImplementation deps.mockk.android
 }

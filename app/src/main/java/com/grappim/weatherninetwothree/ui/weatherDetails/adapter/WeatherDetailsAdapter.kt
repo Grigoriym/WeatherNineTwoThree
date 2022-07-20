@@ -7,10 +7,10 @@ import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.grappim.weatherninetwothree.R
 import com.grappim.weatherninetwothree.databinding.ItemWeatherBinding
-import com.grappim.weatherninetwothree.domain.model.base.TemperatureUnit
+import com.grappim.weatherninetwothree.domain.model.base.Units
 import com.grappim.weatherninetwothree.domain.model.weather.DailyWeather
 
-class WeatherDetailsAdapter(private val temperatureUnit: TemperatureUnit) :
+class WeatherDetailsAdapter(private val units: Units) :
     ListAdapter<DailyWeather, WeatherDetailsAdapter.WeatherDetailsViewHolder>(
         WeatherDetailsDiffUtilCallback()
     ) {
@@ -38,9 +38,9 @@ class WeatherDetailsAdapter(private val temperatureUnit: TemperatureUnit) :
                 tvWeatherType.text = dailyWeather.description
                 ivWeatherType.load(dailyWeather.icon)
 
-                val temperatureString = when (temperatureUnit) {
-                    TemperatureUnit.C -> R.string.temp_day_night_c
-                    TemperatureUnit.F -> R.string.temp_day_night_f
+                val temperatureString = when (units) {
+                    Units.METRIC -> R.string.temp_day_night_c
+                    Units.IMPERIAL -> R.string.temp_day_night_f
                 }
                 tvTemperature.text = binding.root.context.getString(
                     temperatureString,

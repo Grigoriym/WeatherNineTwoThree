@@ -4,10 +4,15 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.location.Location
 import android.location.LocationManager
-import android.os.CancellationSignal
+import com.google.android.gms.common.ConnectionResult
+import com.google.android.gms.common.GoogleApiAvailability
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import timber.log.Timber
 
 class NineTwoThreeLocationManagerImpl : NineTwoThreeLocationManager {
+
+    private lateinit var fusedLocationProvider: FusedLocationProviderClient
 
     private lateinit var locationManager: LocationManager
     private var currentLocation: Location? = null
@@ -21,12 +26,44 @@ class NineTwoThreeLocationManagerImpl : NineTwoThreeLocationManager {
         context: Context,
         onResult: (LocationResult) -> Unit
     ) {
-        locationManager = context
-            .applicationContext
-            .getSystemService(Context.LOCATION_SERVICE) as LocationManager
-        getLocation(
-            onResult = onResult
-        )
+        if (isPlayServicesAvailable(context)) {
+            initFusedLocation(context, onResult)
+        } else {
+            locationManager = context
+                .applicationContext
+                .getSystemService(Context.LOCATION_SERVICE) as LocationManager
+            getLocation(
+                onResult = onResult
+            )
+        }
+    }
+
+    private fun isPlayServicesAvailable(context: Context): Boolean {
+        val googleApiAvailability = GoogleApiAvailability.getInstance()
+        val resultCode = googleApiAvailability.isGooglePlayServicesAvailable(context)
+        return resultCode == ConnectionResult.SUCCESS
+    }
+
+    private fun initFusedLocation(
+        context: Context,
+        onResult: (LocationResult) -> Unit
+    ) {
+        fusedLocationProvider = LocationServices.getFusedLocationProviderClient(context)
+        fusedLocationProvider.lastLocation
+            .addOnSuccessListener { location: Location? ->
+                if (location != null) {
+                    onResult(
+                        LocationResult.Success(
+                            longitude = location.longitude,
+                            latitude = location.latitude
+                        )
+                    )
+                } else {
+                    onResult(LocationResult.Error(""))
+                }
+            }.addOnCanceledListener {
+                onResult(LocationResult.Error(""))
+            }
     }
 
     @SuppressLint("MissingPermission")

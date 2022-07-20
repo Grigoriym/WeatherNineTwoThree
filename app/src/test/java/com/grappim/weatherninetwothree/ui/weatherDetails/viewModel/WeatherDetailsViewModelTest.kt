@@ -1,14 +1,15 @@
 package com.grappim.weatherninetwothree.ui.weatherDetails.viewModel
 
 import app.cash.turbine.test
+import com.grappim.weatherninetwothree.domain.interactor.options.OptionsUseCase
 import com.grappim.weatherninetwothree.domain.interactor.utils.Try
 import com.grappim.weatherninetwothree.domain.interactor.weatherData.GetWeatherDataUseCase
-import com.grappim.weatherninetwothree.domain.interactor.weatherData.WeatherDataParams
 import com.grappim.weatherninetwothree.domain.model.weather.CurrentWeather
 import com.grappim.weatherninetwothree.domain.model.weather.DailyWeather
 import com.grappim.weatherninetwothree.domain.model.weather.WeatherDetails
 import com.grappim.weatherninetwothree.ui.searchCity.model.CurrentLocationInfo
-import com.grappim.weatherninetwothree.util.CoroutineRule
+import com.grappim.test_shared.CoroutineRule
+import com.grappim.test_shared.testException
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -66,10 +67,13 @@ class WeatherDetailsViewModelTest {
     )
 
     @get:Rule
-    val coroutineRule = CoroutineRule()
+    val coroutineRule = com.grappim.test_shared.CoroutineRule()
 
     @MockK
     lateinit var getWeatherDataUseCaseMock: GetWeatherDataUseCase
+
+    @MockK
+    lateinit var optionsUseCase: OptionsUseCase
 
     private lateinit var viewModel: WeatherDetailsViewModel
 
@@ -78,8 +82,9 @@ class WeatherDetailsViewModelTest {
         MockKAnnotations.init(this)
 
         viewModel = WeatherDetailsViewModel(
-            getWeatherDataUseCaseMock,
-            CurrentLocationInfo(NAME, LONGITUDE, LATITUDE)
+            getWeatherDataUseCase = getWeatherDataUseCaseMock,
+            currentLocationInfo = CurrentLocationInfo(NAME, LONGITUDE, LATITUDE),
+            optionsUseCase = optionsUseCase
         )
     }
 
@@ -120,14 +125,14 @@ class WeatherDetailsViewModelTest {
             runCurrent()
 
             coVerify(exactly = 1) {
-                getWeatherDataUseCaseMock.invoke(WeatherDataParams(LATITUDE, LONGITUDE))
+                getWeatherDataUseCaseMock.invoke(any())
             }
         }
 
     private fun error() = runTest {
         coEvery {
             getWeatherDataUseCaseMock.invoke(any())
-        } returns Try.Error(IllegalStateException("error"))
+        } returns Try.Error(testException)
     }
 
     private fun success() = runTest {

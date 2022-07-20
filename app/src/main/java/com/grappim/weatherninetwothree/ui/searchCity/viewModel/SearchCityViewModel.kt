@@ -37,8 +37,6 @@ class SearchCityViewModel @Inject constructor(
         get() = _searchLocationResult.asSharedFlow()
 
     private val _searchInput = MutableSharedFlow<String>()
-    val searchInput: SharedFlow<String>
-        get() = _searchInput.asSharedFlow()
 
     /**
      * This field is needed to return the button state onBackPressed

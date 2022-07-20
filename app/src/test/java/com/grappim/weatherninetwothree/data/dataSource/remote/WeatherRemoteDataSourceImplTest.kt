@@ -1,16 +1,20 @@
 package com.grappim.weatherninetwothree.data.dataSource.remote
 
+import com.grappim.test_shared.jsonForTesting
+import com.grappim.test_shared.malformedJson
 import com.grappim.weatherninetwothree.data.model.geocoding.CurrentLocationDTO
 import com.grappim.weatherninetwothree.data.model.weather.Current
 import com.grappim.weatherninetwothree.data.model.weather.Weather
 import com.grappim.weatherninetwothree.data.model.weather.WeatherCurrentDailyDTO
 import com.grappim.weatherninetwothree.data.network.service.WeatherService
+import com.grappim.weatherninetwothree.domain.dataSource.local.LocalOptionsDataSource
 import com.grappim.weatherninetwothree.domain.dataSource.remote.WeatherRemoteDataSource
 import com.grappim.weatherninetwothree.domain.interactor.getCurrentPlace.GetCurrentPlaceParams
 import com.grappim.weatherninetwothree.domain.interactor.utils.Try
 import com.grappim.weatherninetwothree.domain.interactor.weatherData.WeatherDataParams
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import io.mockk.MockKAnnotations
+import io.mockk.impl.annotations.MockK
 import kotlinx.coroutines.test.runTest
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.Json
@@ -29,17 +33,14 @@ import retrofit2.create
 
 class WeatherRemoteDataSourceImplTest {
 
+    @MockK
+    lateinit var optionsDataSource: LocalOptionsDataSource
+
     private lateinit var weatherRemoteDataSource: WeatherRemoteDataSource
     private lateinit var mockWebServer: MockWebServer
     private lateinit var weatherService: WeatherService
 
     private val client = OkHttpClient.Builder().build()
-    private val json = Json {
-        isLenient = true
-        prettyPrint = false
-        ignoreUnknownKeys = true
-        explicitNulls = false
-    }
 
     private val currentLocationSuccess = listOf(CurrentLocationDTO(name = "Almaty", country = "KZ"))
     private val currentLocationSuccessBody = """
@@ -73,8 +74,6 @@ class WeatherRemoteDataSourceImplTest {
         ), daily = listOf(), lat = 43.1, lon = 76.1, timezone = "Asia/Almaty"
     )
 
-    private val malformedJson = "This is malformed"
-
     private val successBody = """
         {
             "lat":43.1,
@@ -103,11 +102,12 @@ class WeatherRemoteDataSourceImplTest {
         weatherService = Retrofit.Builder()
             .baseUrl(mockWebServer.url("/"))
             .client(client)
-            .addConverterFactory(json.asConverterFactory(contentType))
+            .addConverterFactory(jsonForTesting.asConverterFactory(contentType))
             .build()
             .create()
         weatherRemoteDataSource = WeatherRemoteDataSourceImpl(
-            weatherService = weatherService
+            weatherService = weatherService,
+            optionsDataSource = optionsDataSource
         )
     }
 
@@ -117,7 +117,7 @@ class WeatherRemoteDataSourceImplTest {
     }
 
     @Test
-    fun `calling getWeather correct response is parsed into Success result`() = runTest {
+    fun `calling getWeather with correct response is parsed into Success result`() = runTest {
         val expected = weatherCurrentDailySuccess
 
         val response = MockResponse()
@@ -202,22 +202,23 @@ class WeatherRemoteDataSourceImplTest {
     }
 
     @Test
-    fun `calling getCurrentLocation malformed response is parsed into json Error result`() = runTest {
-        val response = MockResponse()
-            .setBody(malformedJson)
-            .setResponseCode(200)
+    fun `calling getCurrentLocation malformed response is parsed into json Error result`() =
+        runTest {
+            val response = MockResponse()
+                .setBody(malformedJson)
+                .setResponseCode(200)
 
-        mockWebServer.enqueue(response)
+            mockWebServer.enqueue(response)
 
-        val actual = weatherRemoteDataSource.getCurrentLocation(
-            GetCurrentPlaceParams(longitude = 0.0, latitude = 0.0)
-        )
+            val actual = weatherRemoteDataSource.getCurrentLocation(
+                GetCurrentPlaceParams(longitude = 0.0, latitude = 0.0)
+            )
 
-        actual shouldBeInstanceOf Try.Error::class
+            actual shouldBeInstanceOf Try.Error::class
 
-        val actualResult = (actual as Try.Error).result
-        actualResult shouldBeInstanceOf SerializationException::class
-    }
+            val actualResult = (actual as Try.Error).result
+            actualResult shouldBeInstanceOf SerializationException::class
+        }
 
     @Test
     fun `calling getCurrentLocation with error response code is parsed into HttpException Error result`() =

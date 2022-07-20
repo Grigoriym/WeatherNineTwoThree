@@ -2,7 +2,7 @@ package com.grappim.weatherninetwothree.data.repository
 
 import com.grappim.weatherninetwothree.di.app.IoDispatcher
 import com.grappim.weatherninetwothree.domain.dataSource.local.LocalOptionsDataSource
-import com.grappim.weatherninetwothree.domain.model.base.TemperatureUnit
+import com.grappim.weatherninetwothree.domain.model.base.Units
 import com.grappim.weatherninetwothree.domain.repository.OptionsRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
@@ -15,12 +15,12 @@ class OptionsRepositoryImpl @Inject constructor(
     private val localOptionsDataSource: LocalOptionsDataSource
 ) : OptionsRepository {
 
-    override suspend fun saveTemperatureUnit(unit: TemperatureUnit) =
+    override suspend fun saveTemperatureUnit(unit: Units) =
         withContext(ioDispatcher) {
             localOptionsDataSource.saveTemperatureUnit(unit)
         }
 
-    override fun getTemperatureUnit(): TemperatureUnit =
+    override fun getTemperatureUnit(): Units =
         localOptionsDataSource.getTemperatureUnit()
 
 }

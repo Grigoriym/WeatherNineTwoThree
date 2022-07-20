@@ -1,0 +1,16 @@
+plugins {
+    id 'com.android.library'
+}
+
+apply from: "$rootProject.projectDir/android-common.gradle"
+
+android {
+    defaultConfig {
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
+    }
+}
+
+dependencies {
+    implementation deps.google.material
+}

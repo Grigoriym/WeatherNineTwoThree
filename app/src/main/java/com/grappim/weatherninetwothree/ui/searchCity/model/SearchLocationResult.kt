@@ -8,5 +8,5 @@ sealed class SearchLocationResult {
         val result: List<FoundLocation>
     ) : SearchLocationResult()
 
-    data class ErrorResult(val e: Throwable) : SearchLocationResult()
+    data class ErrorResult(val result: Throwable) : SearchLocationResult()
 }

@@ -8,7 +8,7 @@ import coil.load
 import com.grappim.weatherninetwothree.R
 import com.grappim.weatherninetwothree.core.navigation.NavigationManager
 import com.grappim.weatherninetwothree.databinding.FragmentWeatherDetailsBinding
-import com.grappim.weatherninetwothree.domain.model.base.TemperatureUnit
+import com.grappim.weatherninetwothree.domain.model.base.Units
 import com.grappim.weatherninetwothree.ui.searchCity.model.CurrentLocationInfo
 import com.grappim.weatherninetwothree.ui.weatherDetails.adapter.WeatherDetailsAdapter
 import com.grappim.weatherninetwothree.ui.weatherDetails.viewModel.WeatherDataResult
@@ -33,7 +33,7 @@ class WeatherDetailsFragment : Fragment(R.layout.fragment_weather_details) {
     private val binding by viewBinding(FragmentWeatherDetailsBinding::bind)
 
     private val weatherAdapter: WeatherDetailsAdapter by lazy {
-        WeatherDetailsAdapter(viewModel.temperatureUnit)
+        WeatherDetailsAdapter(viewModel.units)
     }
     private val currentLocationInfo by lazyArg<CurrentLocationInfo>(ARG_KEY_LOCATION_INFO)
 
@@ -65,10 +65,10 @@ class WeatherDetailsFragment : Fragment(R.layout.fragment_weather_details) {
                     tvWeatherType.text = result.currentWeather.description
                     ivWeatherType.load(result.currentWeather.icon)
                     swipeRefresh.isRefreshing = false
-                    
-                    val currentTempString = when (viewModel.temperatureUnit) {
-                        TemperatureUnit.F -> R.string.temp_f
-                        TemperatureUnit.C -> R.string.temp_c
+
+                    val currentTempString = when (viewModel.units) {
+                        Units.IMPERIAL -> R.string.temp_f
+                        Units.METRIC -> R.string.temp_c
                     }
                     tvCurrentTemp.text = getString(
                         currentTempString,

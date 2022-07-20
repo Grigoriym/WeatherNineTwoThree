@@ -21,7 +21,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
                 android:gravity="center"
-                android:text="@string/temperature_units"
+                android:text="@string/units"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -43,7 +43,7 @@
                     android:layout_height="40dp"
                     android:gravity="center"
                     app:layout_flexGrow="1"
-                    app:toggle_text="°C" />
+                    app:toggle_text="@string/metric" />
 
                 <nl.bryanderidder.themedtogglebuttongroup.ThemedButton
                     android:id="@+id/btnF"
@@ -51,7 +51,7 @@
                     android:layout_height="40dp"
                     android:gravity="center"
                     app:layout_flexGrow="1"
-                    app:toggle_text="°F" />
+                    app:toggle_text="@string/imperial" />
 
             </nl.bryanderidder.themedtogglebuttongroup.ThemedToggleButtonGroup>
 

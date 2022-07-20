@@ -6,7 +6,7 @@ import com.grappim.weatherninetwothree.domain.interactor.options.OptionsUseCase
 import com.grappim.weatherninetwothree.domain.interactor.utils.Try
 import com.grappim.weatherninetwothree.domain.interactor.weatherData.GetWeatherDataUseCase
 import com.grappim.weatherninetwothree.domain.interactor.weatherData.WeatherDataParams
-import com.grappim.weatherninetwothree.domain.model.base.TemperatureUnit
+import com.grappim.weatherninetwothree.domain.model.base.Units
 import com.grappim.weatherninetwothree.ui.searchCity.model.CurrentLocationInfo
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
@@ -22,7 +22,7 @@ class WeatherDetailsViewModel @AssistedInject constructor(
     private val optionsUseCase: OptionsUseCase
 ) : ViewModel() {
 
-    val temperatureUnit: TemperatureUnit
+    val units: Units
         get() = optionsUseCase.getTemperatureUnit()
 
     private val _weatherDetails = MutableSharedFlow<WeatherDataResult>(

@@ -1,16 +1,16 @@
 buildscript {
     ext.versions = [
-            'minSdk'    : 21,
-            'compileSdk': 32,
-            'targetSdk' : 32,
+            minSdk                     : 21,
+            compileSdk                 : 32,
+            targetSdk                  : 32,
 
-            'kotlin'    : [
+            kotlin                     : [
                     'core'         : '1.7.10',
                     'serialization': '1.3.2',
                     'coroutines'   : '1.6.2'
             ],
 
-            'androidx'  : [
+            androidx                   : [
                     'fragment'        : '1.5.0',
                     'core'            : '1.7.0',
                     'appcompat'       : '1.4.1',
@@ -19,49 +19,86 @@ buildscript {
                     'swiperefresh'    : '1.1.0',
                     'startup'         : '1.1.1',
                     'recyclerview'    : '1.2.1',
-                    'navigation'      : '2.5.0'
+                    'navigation'      : '2.5.0',
+                    coreTesting       : '2.1.0'
             ],
-            'google'    : [
+            google                     : [
                     'material': "1.6.1",
-                    'dagger'  : '2.42'
+                    'dagger'  : '2.42',
+                    'location': '20.0.0'
             ],
 
-            timber      : '5.0.1',
-            coil        : '2.0.0',
-            flowbinding:'1.2.0'
+            toggleButtonGroup          : '1.4.1',
+            timber                     : '5.0.1',
+            coil                       : '2.0.0',
+            flowbinding                : '1.2.0',
+            okhttp                     : '5.0.0-alpha.7',
+            retrofit                   : '2.9.0',
+            retrofitKotlinSerialization: '0.8.0',
+            chucker                    : '3.5.2',
+            desugar                    : '1.1.5',
+
+            kluent                     : '1.68',
+            mockk                      : '1.12.4',
+            junit                      : '4.13.2',
+            turbine                    : '0.8.0'
     ]
     ext.deps = [
-            timber    : "com.jakewharton.timber:timber:${versions.timber}",
-            coil      : "io.coil-kt:coil:${versions.coil}",
-            flowbinding:"io.github.reactivecircus.flowbinding:flowbinding-android:${versions.flowbinding}",
+            timber                     : "com.jakewharton.timber:timber:${versions.timber}",
+            coil                       : "io.coil-kt:coil:${versions.coil}",
+            flowbinding                : "io.github.reactivecircus.flowbinding:flowbinding-android:${versions.flowbinding}",
+            retrofit                   : "com.squareup.retrofit2:retrofit:${versions.retrofit}",
+            retrofitKotlinSerialization: "com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:${versions.retrofitKotlinSerialization}",
+            toggleButtonGroup          : "nl.bryanderidder:themed-toggle-button-group:${versions.toggleButtonGroup}",
+            desugar                    : "com.android.tools:desugar_jdk_libs:${versions.desugar}",
 
-            kotlin    : [
-                    'coroutines'   : "org.jetbrains.kotlinx:kotlinx-coroutines-android:${versions.kotlin.coroutines}",
-                    'serialization': "org.jetbrains.kotlinx:kotlinx-serialization-json:${versions.kotlin.serialization}"
+            kluent                     : "org.amshove.kluent:kluent-android:${versions.kluent}",
+            turbine                    : "app.cash.turbine:turbine:$versions.turbine",
+            junit                      : "junit:junit:${versions.junit}",
+
+            kotlin                     : [
+                    coroutines    : "org.jetbrains.kotlinx:kotlinx-coroutines-android:${versions.kotlin.coroutines}",
+                    serialization : "org.jetbrains.kotlinx:kotlinx-serialization-json:${versions.kotlin.serialization}",
+                    coroutinesTest: "org.jetbrains.kotlinx:kotlinx-coroutines-test:${versions.kotlin.coroutines}"
             ],
-            androidx  : [
+            androidx                   : [
                     'fragment'        : "androidx.fragment:fragment-ktx:$versions.androidx.fragment",
                     'appcompat'       : "androidx.appcompat:appcompat:${versions.androidx.appcompat}",
                     'core'            : "androidx.core:core-ktx:${versions.androidx.core}",
                     'constraintLayout': "androidx.constraintlayout:constraintlayout:${versions.androidx.constraintLayout}",
                     'swiperefresh'    : "androidx.swiperefreshlayout:swiperefreshlayout:${versions.androidx.swiperefresh}",
                     'startup'         : "androidx.startup:startup-runtime:${versions.androidx.startup}",
-                    'recyclerview'    : "androidx.recyclerview:recyclerview:${versions.androidx.recyclerview}"
+                    'recyclerview'    : "androidx.recyclerview:recyclerview:${versions.androidx.recyclerview}",
+                    coreTesting       : "androidx.arch.core:core-testing:${versions.androidx.coreTesting}"
             ],
-            navigation: [
+            navigation                 : [
                     fragment: "androidx.navigation:navigation-fragment-ktx:${versions.androidx.navigation}",
                     ui      : "androidx.navigation:navigation-ui-ktx:${versions.androidx.navigation}"
             ],
-            google    : [
+            google                     : [
                     'material'    : "com.google.android.material:material:${versions.google.material}",
                     'hiltandroid' : "com.google.dagger:hilt-android:${versions.google.dagger}",
-                    'hiltcompiler': "com.google.dagger:hilt-compiler:${versions.google.dagger}"
+                    'hiltcompiler': "com.google.dagger:hilt-compiler:${versions.google.dagger}",
+                    'location'    : "com.google.android.gms:play-services-location:${versions.google.location}"
             ],
-            lifecycle : [
+            lifecycle                  : [
                     'livedata' : "androidx.lifecycle:lifecycle-livedata-ktx:${versions.androidx.lifecycle}",
                     'viewmodel': "androidx.lifecycle:lifecycle-viewmodel-ktx:${versions.androidx.lifecycle}",
                     'runtime'  : "androidx.lifecycle:lifecycle-runtime-ktx:${versions.androidx.lifecycle}",
             ],
+            okhttp                     : [
+                    core         : "com.squareup.okhttp3:okhttp:${versions.okhttp}",
+                    logging      : "com.squareup.okhttp3:logging-interceptor:${versions.okhttp}",
+                    mockWebServer: "com.squareup.okhttp3:mockwebserver:${versions.okhttp}"
+            ],
+            chucker                    : [
+                    core: "com.github.chuckerteam.chucker:library:${versions.chucker}",
+                    noop: "com.github.chuckerteam.chucker:library-no-op:${versions.chucker}"
+            ],
+            mockk                      : [
+                    core   : "io.mockk:mockk:${versions.mockk}",
+                    android: "io.mockk:mockk-android:${versions.mockk}"
+            ]
     ]
 
     repositories {
@@ -81,6 +118,7 @@ plugins {
     id 'com.android.application' version '7.2.1' apply false
     id 'com.android.library' version '7.2.1' apply false
     id 'org.jetbrains.kotlin.android' version '1.7.10' apply false
+    id 'org.jetbrains.kotlin.jvm' version '1.7.10' apply false
 }
 
 task clean(type: Delete) {

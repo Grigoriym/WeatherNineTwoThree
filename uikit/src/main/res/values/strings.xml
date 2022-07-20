@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">WeatherNineTwoThree</string>
+
+    <string name="ok">OK</string>
+
+    <string name="your_city">Your city</string>
+
+    <string name="action_back">Back</string>
+
+    <string name="temp">%1$s°</string>
+    <string name="temp_c">%1$s°C</string>
+    <string name="temp_f">%1$s°F</string>
+
+    <string name="temp_day_night">%1$s°/%2$s°</string>
+    <string name="temp_day_night_c">%1$s°C/%2$s°C</string>
+    <string name="temp_day_night_f">%1$s°F/%2$s°F</string>
+
+    <string name="location_permission_needed">Location permission is required to get the current location</string>
+    <string name="location_permission_not_available">Permission is not available. Requesting location permission.</string>
+    <string name="location_permission_denied">Location permission request was denied</string>
+
+    <string name="units">Units</string>
+    <string name="imperial">Imperial</string>
+    <string name="metric">Metric</string>
+</resources>

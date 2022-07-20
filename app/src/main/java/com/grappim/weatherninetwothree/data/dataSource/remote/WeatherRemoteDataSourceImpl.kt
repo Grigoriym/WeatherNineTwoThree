@@ -10,7 +10,6 @@ import com.grappim.weatherninetwothree.domain.interactor.getCurrentPlace.GetCurr
 import com.grappim.weatherninetwothree.domain.interactor.utils.Try
 import com.grappim.weatherninetwothree.domain.interactor.utils.runOperationCatching
 import com.grappim.weatherninetwothree.domain.interactor.weatherData.WeatherDataParams
-import com.grappim.weatherninetwothree.domain.model.base.TemperatureUnit
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -26,14 +25,7 @@ class WeatherRemoteDataSourceImpl @Inject constructor(
         weatherService.getCurrentAndDailyWeather(
             latitude = params.latitude,
             longitude = params.longitude,
-            units = when (optionsDataSource.getTemperatureUnit()) {
-                TemperatureUnit.C -> {
-                    "metric"
-                }
-                TemperatureUnit.F -> {
-                    "imperial"
-                }
-            }
+            units = optionsDataSource.getTemperatureUnit().title
         )
     }
 
