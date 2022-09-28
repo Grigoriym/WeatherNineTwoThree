@@ -1,16 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Base.V21.Night.Theme.WeatherNineTwoThree" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-        <item name="colorPrimary">@color/nineTwoThreeBlack</item>
+    <style name="Base.V21.Night.Theme.WeatherNineTwoThree" parent="Base.V21.Theme.WeatherNineTwoThree">
+<!--        <item name="colorPrimary">@color/nineTwoThreeBlack</item>-->
 
-        <item name="android:colorControlActivated">@color/nineTwoThreeMain</item>
-        <item name="shapeAppearanceSmallComponent">
-            @style/ShapeAppearance.NineTwoThree.SmallComponent
-        </item>
-        <item name="shapeAppearanceMediumComponent">
-            @style/ShapeAppearance.NineTwoThree.MediumComponent
-        </item>
+<!--        <item name="android:colorControlActivated">@color/nineTwoThreeMain</item>-->
     </style>
 
     <style name="Base.Theme.WeatherNineTwoThree" parent="Base.V21.Night.Theme.WeatherNineTwoThree" />

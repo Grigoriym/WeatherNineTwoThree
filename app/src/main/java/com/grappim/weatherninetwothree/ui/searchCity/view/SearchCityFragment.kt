@@ -14,6 +14,8 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.snackbar.Snackbar
 import com.grappim.weatherninetwothree.R
+import com.grappim.weatherninetwothree.core.InsetterSetter
+import com.grappim.weatherninetwothree.core.InsetterSetterDelegate
 import com.grappim.weatherninetwothree.core.location.LocationResult
 import com.grappim.weatherninetwothree.core.location.NineTwoThreeLocationManager
 import com.grappim.weatherninetwothree.core.location.NineTwoThreeLocationManagerImpl
@@ -42,12 +44,13 @@ import reactivecircus.flowbinding.android.widget.afterTextChanges
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class SearchCityFragment : Fragment(R.layout.fragment_search_city) {
+class SearchCityFragment : Fragment(R.layout.fragment_search_city),
+    InsetterSetter by InsetterSetterDelegate() {
 
     @Inject
     lateinit var navigationManager: NavigationManager
 
-    private val viewBinding by viewBinding(FragmentSearchCityBinding::bind)
+    private val binding by viewBinding(FragmentSearchCityBinding::bind)
 
     private val viewModel by viewModels<SearchCityViewModel>()
 
@@ -70,7 +73,7 @@ class SearchCityFragment : Fragment(R.layout.fragment_search_city) {
                 initLocationUpdates()
             }
             else -> {
-                viewBinding.root.showSnackbar(
+                binding.root.showSnackbar(
                     R.string.location_permission_denied,
                     Snackbar.LENGTH_SHORT,
                     R.string.ok
@@ -83,6 +86,8 @@ class SearchCityFragment : Fragment(R.layout.fragment_search_city) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setInsetterForSystemBars(binding.root)
+        setInsetterForNavigationBarsAndIme(binding.btnOk, true)
         restoreState(savedInstanceState)
         initViews()
         observeViewModel()
@@ -108,7 +113,7 @@ class SearchCityFragment : Fragment(R.layout.fragment_search_city) {
 
             submitListToAdapter(foundLocationList)
         } else {
-            viewBinding.btnOk.isVisible = viewModel.isButtonOkVisible
+            binding.btnOk.isVisible = viewModel.isButtonOkVisible
         }
     }
 
@@ -152,7 +157,7 @@ class SearchCityFragment : Fragment(R.layout.fragment_search_city) {
     }
 
     private fun submitListToAdapter(list: List<FoundLocation>) {
-        viewBinding.cardPlaces.fadeVisibility(list.isNotEmpty())
+        binding.cardPlaces.fadeVisibility(list.isNotEmpty())
         adapter.submitList(list)
     }
 
@@ -162,7 +167,7 @@ class SearchCityFragment : Fragment(R.layout.fragment_search_city) {
      * do nothing if we paste location from recyclerView or from getCurrentPlace
      */
     private fun setEditCityText(text: String) {
-        with(viewBinding) {
+        with(binding) {
             val focused = etCity.hasFocus()
             if (focused) {
                 etCity.clearFocus()
@@ -175,15 +180,15 @@ class SearchCityFragment : Fragment(R.layout.fragment_search_city) {
     }
 
     private fun initViews() {
-        with(viewBinding) {
+        with(binding) {
             etCity.afterTextChanges()
                 .skipInitialValue()
                 .filter {
                     it.editable?.toString()?.isNotEmpty() == true
                 }
                 .onEach { text ->
-                    val etTag = viewBinding.etCity.tag
-                    val etHasFocus = viewBinding.etCity.hasFocus()
+                    val etTag = binding.etCity.tag
+                    val etHasFocus = binding.etCity.hasFocus()
                     if (etTag == null && etHasFocus) {
                         viewModel.searchLocation(text.editable?.toString()!!)
                         setOkButtonVisibility(false)
@@ -238,19 +243,19 @@ class SearchCityFragment : Fragment(R.layout.fragment_search_city) {
 
     private fun clearAdapter() {
         adapter.submitList(emptyList())
-        viewBinding.cardPlaces.fadeVisibility(false)
+        binding.cardPlaces.fadeVisibility(false)
     }
 
     private fun setOkButtonVisibility(isVisible: Boolean) {
         viewModel.isButtonOkVisible = isVisible
-        viewBinding.btnOk.isVisible = isVisible
+        binding.btnOk.isVisible = isVisible
     }
 
     private fun goToWeatherDetails() {
         hideSoftKeyboard()
         navigationManager.goToDetails(
             WeatherDetailsFragment.getBundleForDetails(
-                name = viewBinding.etCity.text.toString(),
+                name = binding.etCity.text.toString(),
                 longitude = requireNotNull(viewModel.longitude),
                 latitude = requireNotNull(viewModel.latitude)
             )
@@ -270,7 +275,7 @@ class SearchCityFragment : Fragment(R.layout.fragment_search_city) {
         if (shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_COARSE_LOCATION)
             || shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION)
         ) {
-            viewBinding.root.showSnackbar(
+            binding.root.showSnackbar(
                 R.string.location_permission_needed,
                 Snackbar.LENGTH_INDEFINITE,
                 R.string.ok
@@ -278,7 +283,7 @@ class SearchCityFragment : Fragment(R.layout.fragment_search_city) {
                 launchLocationPermissionRequest()
             }
         } else {
-            viewBinding.root.showSnackbar(
+            binding.root.showSnackbar(
                 R.string.location_permission_not_available,
                 Snackbar.LENGTH_LONG,
                 R.string.ok
@@ -318,7 +323,7 @@ class SearchCityFragment : Fragment(R.layout.fragment_search_city) {
                 viewModel.getCurrentPlace()
             }
             is LocationResult.Error -> {
-                viewBinding.root.showSnackbar(
+                binding.root.showSnackbar(
                     msg = locationResult.errorMsg
                 )
             }

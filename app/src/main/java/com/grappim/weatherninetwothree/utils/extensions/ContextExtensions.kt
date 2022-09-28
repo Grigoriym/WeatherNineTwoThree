@@ -6,6 +6,7 @@ import android.util.DisplayMetrics
 import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat
+import com.grappim.weatherninetwothree.R
 
 fun Context.dpToPx(dp: Int): Int =
     dp * (this.resources.displayMetrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT)
@@ -29,3 +30,6 @@ fun Context.color(@ColorRes colorRes: Int) = ContextCompat.getColor(this, colorR
 
 fun Context.drawable(@DrawableRes drawableRes: Int) =
     ContextCompat.getDrawable(this, drawableRes)
+
+fun Context.isSystemInDarkMode(): Boolean =
+    resources.getBoolean(R.bool.is_light_mode)

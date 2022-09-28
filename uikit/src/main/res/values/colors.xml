@@ -6,4 +6,13 @@
   <color name="nineTwoThreeGrey">#D0D0D0</color>
   <color name="nineTwoThreeBlack">#FF000000</color>
   <color name="nineTwoThreeWhite">#FFFFFFFF</color>
+
+  <color name="nineTwoThreeNavyBlue">#FF0068B3</color>
+
+  <color name="transparent">#00000000</color>
+
+  <color name="nineTwoThreeBackground">@color/nineTwoThreeWhite</color>
+
+  <color name="statusBar">@android:color/transparent</color>
+  <color name="navigationBar">@android:color/transparent</color>
 </resources>

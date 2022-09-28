@@ -44,7 +44,7 @@ fun View.showSnackbar(
     snackbar.show()
 }
 
- fun View.isKeyboardVisible(): Boolean =
+fun View.isKeyboardVisible(): Boolean =
     ViewCompat
         .getRootWindowInsets(this)
         ?.isVisible(WindowInsetsCompat.Type.ime()) ?: false

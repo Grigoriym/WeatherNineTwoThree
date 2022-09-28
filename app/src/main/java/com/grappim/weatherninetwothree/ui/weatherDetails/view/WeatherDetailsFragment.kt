@@ -6,6 +6,8 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import coil.load
 import com.grappim.weatherninetwothree.R
+import com.grappim.weatherninetwothree.core.InsetterSetter
+import com.grappim.weatherninetwothree.core.InsetterSetterDelegate
 import com.grappim.weatherninetwothree.core.navigation.NavigationManager
 import com.grappim.weatherninetwothree.databinding.FragmentWeatherDetailsBinding
 import com.grappim.weatherninetwothree.domain.model.base.Units
@@ -22,7 +24,8 @@ import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class WeatherDetailsFragment : Fragment(R.layout.fragment_weather_details) {
+class WeatherDetailsFragment : Fragment(R.layout.fragment_weather_details),
+    InsetterSetter by InsetterSetterDelegate() {
 
     @Inject
     lateinit var navigationManager: NavigationManager
@@ -43,6 +46,8 @@ class WeatherDetailsFragment : Fragment(R.layout.fragment_weather_details) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setInsetterForSystemBars(binding.btnBack)
+        setInsetterForNavigationBarsAndIme(binding.rvDetails, false)
         initViews()
         observeViewModel()
     }
@@ -97,6 +102,8 @@ class WeatherDetailsFragment : Fragment(R.layout.fragment_weather_details) {
             swipeRefresh.setOnRefreshListener {
                 viewModel.getWeatherData()
             }
+
+//            rvDetails.applyInsetter { type(navigationBars = true) { padding() } }
         }
     }
 

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Base.V23.Night.Theme.WeatherNineTwoThree" parent="Base.V21.Night.Theme.WeatherNineTwoThree">
+        <item name="android:windowLightStatusBar">@bool/is_light_mode</item>
+    </style>
+
+    <style name="Base.Theme.WeatherNineTwoThree" parent="Base.V23.Night.Theme.WeatherNineTwoThree" />
+</resources>

@@ -32,6 +32,8 @@ android {
 dependencies {
     implementation(project(":uikit"))
 
+    implementation("dev.chrisbanes.insetter:insetter:0.6.1")
+
     implementation deps.kotlin.coroutines
     implementation deps.kotlin.serialization
 

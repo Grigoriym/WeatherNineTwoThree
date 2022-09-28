@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Base.V29.Theme.WeatherNineTwoThree" parent="Base.V27.Theme.WeatherNineTwoThree">
+        <item name="android:enforceNavigationBarContrast">false</item>
+        <item name="android:enforceStatusBarContrast">false</item>
+    </style>
+
+    <style name="Base.Theme.WeatherNineTwoThree" parent="Base.V29.Theme.WeatherNineTwoThree" />
+</resources>

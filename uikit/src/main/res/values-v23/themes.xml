@@ -2,7 +2,7 @@
 <resources>
 
     <style name="Base.V23.Theme.WeatherNineTwoThree" parent="Base.V21.Theme.WeatherNineTwoThree">
-        <item name="android:windowLightStatusBar">@bool/is_light_mode</item>
+        <item name="android:windowLightStatusBar">?attr/isLightTheme</item>
     </style>
 
     <style name="Base.Theme.WeatherNineTwoThree" parent="Base.V23.Theme.WeatherNineTwoThree" />
