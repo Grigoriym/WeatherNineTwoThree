@@ -1,12 +1,12 @@
 package com.grappim.weatherninetwothree.core.location
 
-sealed class LocationResult {
+sealed class GetLocationResult {
     data class Success(
         val longitude: Double,
         val latitude: Double
-    ) : LocationResult()
+    ) : GetLocationResult()
 
     data class Error(
         val errorMsg: String
-    ) : LocationResult()
+    ) : GetLocationResult()
 }

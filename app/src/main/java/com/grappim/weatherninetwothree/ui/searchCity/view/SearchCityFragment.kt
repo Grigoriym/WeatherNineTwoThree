@@ -16,9 +16,8 @@ import com.google.android.material.snackbar.Snackbar
 import com.grappim.weatherninetwothree.R
 import com.grappim.weatherninetwothree.core.InsetterSetter
 import com.grappim.weatherninetwothree.core.InsetterSetterDelegate
-import com.grappim.weatherninetwothree.core.location.LocationResult
-import com.grappim.weatherninetwothree.core.location.NineTwoThreeLocationManager
-import com.grappim.weatherninetwothree.core.location.NineTwoThreeLocationManagerImpl
+import com.grappim.weatherninetwothree.core.location.GetLocationResult
+import com.grappim.weatherninetwothree.core.location.LastKnowLocationManager
 import com.grappim.weatherninetwothree.core.navigation.NavigationManager
 import com.grappim.weatherninetwothree.databinding.FragmentSearchCityBinding
 import com.grappim.weatherninetwothree.domain.model.location.FoundLocation
@@ -50,13 +49,12 @@ class SearchCityFragment : Fragment(R.layout.fragment_search_city),
     @Inject
     lateinit var navigationManager: NavigationManager
 
+    @Inject
+    lateinit var lastKnownLocationManager: LastKnowLocationManager
+
     private val binding by viewBinding(FragmentSearchCityBinding::bind)
 
     private val viewModel by viewModels<SearchCityViewModel>()
-
-    private val locationManager: NineTwoThreeLocationManager by lazy {
-        NineTwoThreeLocationManagerImpl()
-    }
 
     private val adapter by lazy {
         CitiesRecyclerAdapter(::onFoundLocationClicked)
@@ -74,9 +72,9 @@ class SearchCityFragment : Fragment(R.layout.fragment_search_city),
             }
             else -> {
                 binding.root.showSnackbar(
-                    R.string.location_permission_denied,
-                    Snackbar.LENGTH_SHORT,
-                    R.string.ok
+                    messageResId = R.string.location_permission_denied,
+                    length = Snackbar.LENGTH_SHORT,
+                    actionMessageId = R.string.ok
                 ) {
                     goToAppPermissions()
                 }
@@ -211,7 +209,9 @@ class SearchCityFragment : Fragment(R.layout.fragment_search_city),
             etCity.setOnEditorActionListener { _, actionId, _ ->
                 return@setOnEditorActionListener when (actionId) {
                     EditorInfo.IME_ACTION_DONE -> {
-                        goToWeatherDetails()
+                        if (binding.btnOk.isVisible) {
+                            goToWeatherDetails()
+                        }
                         true
                     }
                     else -> false
@@ -311,20 +311,20 @@ class SearchCityFragment : Fragment(R.layout.fragment_search_city),
                 requireContext().isPermissionGranted(Manifest.permission.ACCESS_FINE_LOCATION))
 
     private fun initLocationUpdates() {
-        locationManager.getCurrentLocation(requireContext(), ::handleLocationUpdates)
+        lastKnownLocationManager.getCurrentLocation(::handleLocationUpdates)
     }
 
-    private fun handleLocationUpdates(locationResult: LocationResult) {
-        when (locationResult) {
-            is LocationResult.Success -> {
+    private fun handleLocationUpdates(getLocationResult: GetLocationResult) {
+        when (getLocationResult) {
+            is GetLocationResult.Success -> {
                 clearAdapter()
-                viewModel.latitude = locationResult.latitude
-                viewModel.longitude = locationResult.longitude
+                viewModel.latitude = getLocationResult.latitude
+                viewModel.longitude = getLocationResult.longitude
                 viewModel.getCurrentPlace()
             }
-            is LocationResult.Error -> {
+            is GetLocationResult.Error -> {
                 binding.root.showSnackbar(
-                    msg = locationResult.errorMsg
+                    msg = getLocationResult.errorMsg
                 )
             }
         }

@@ -8,9 +8,13 @@ import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
+import dagger.hilt.android.qualifiers.ApplicationContext
 import timber.log.Timber
+import javax.inject.Inject
 
-class NineTwoThreeLocationManagerImpl : NineTwoThreeLocationManager {
+class LastKnowLocationManagerImpl @Inject constructor(
+    @ApplicationContext private val context: Context
+) : LastKnowLocationManager {
 
     private lateinit var fusedLocationProvider: FusedLocationProviderClient
 
@@ -23,8 +27,7 @@ class NineTwoThreeLocationManagerImpl : NineTwoThreeLocationManager {
     private var longitude: Double? = null
 
     override fun getCurrentLocation(
-        context: Context,
-        onResult: (LocationResult) -> Unit
+        onResult: (GetLocationResult) -> Unit
     ) {
         if (isPlayServicesAvailable(context)) {
             initFusedLocation(context, onResult)
@@ -46,29 +49,29 @@ class NineTwoThreeLocationManagerImpl : NineTwoThreeLocationManager {
 
     private fun initFusedLocation(
         context: Context,
-        onResult: (LocationResult) -> Unit
+        onResult: (GetLocationResult) -> Unit
     ) {
         fusedLocationProvider = LocationServices.getFusedLocationProviderClient(context)
         fusedLocationProvider.lastLocation
             .addOnSuccessListener { location: Location? ->
                 if (location != null) {
                     onResult(
-                        LocationResult.Success(
+                        GetLocationResult.Success(
                             longitude = location.longitude,
                             latitude = location.latitude
                         )
                     )
                 } else {
-                    onResult(LocationResult.Error(""))
+                    onResult(GetLocationResult.Error("Cannot get location"))
                 }
             }.addOnCanceledListener {
-                onResult(LocationResult.Error(""))
+                onResult(GetLocationResult.Error("Cannot get location"))
             }
     }
 
     @SuppressLint("MissingPermission")
     private fun getLocation(
-        onResult: (LocationResult) -> Unit
+        onResult: (GetLocationResult) -> Unit
     ) {
         val lastKnownLocationByGps =
             locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
@@ -106,14 +109,14 @@ class NineTwoThreeLocationManagerImpl : NineTwoThreeLocationManager {
         Timber.d("locationByGps: $locationByGps")
         if (longitude != null && latitude != null) {
             onResult(
-                LocationResult.Success(
+                GetLocationResult.Success(
                     longitude = longitude!!,
                     latitude = latitude!!
                 )
             )
         } else {
             onResult(
-                LocationResult.Error(
+                GetLocationResult.Error(
                     errorMsg = "Cannot retrieve location data"
                 )
             )

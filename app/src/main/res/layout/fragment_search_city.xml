@@ -79,7 +79,6 @@
             android:id="@+id/rvPlaces"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/nineTwoThreeWhite"
             android:paddingTop="32dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:itemCount="5"

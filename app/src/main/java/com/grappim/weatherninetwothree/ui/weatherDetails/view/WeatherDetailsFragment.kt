@@ -102,8 +102,6 @@ class WeatherDetailsFragment : Fragment(R.layout.fragment_weather_details),
             swipeRefresh.setOnRefreshListener {
                 viewModel.getWeatherData()
             }
-
-//            rvDetails.applyInsetter { type(navigationBars = true) { padding() } }
         }
     }
 

@@ -2,9 +2,7 @@
 <resources>
 
     <style name="Base.V21.Night.Theme.WeatherNineTwoThree" parent="Base.V21.Theme.WeatherNineTwoThree">
-<!--        <item name="colorPrimary">@color/nineTwoThreeBlack</item>-->
 
-<!--        <item name="android:colorControlActivated">@color/nineTwoThreeMain</item>-->
     </style>
 
     <style name="Base.Theme.WeatherNineTwoThree" parent="Base.V21.Night.Theme.WeatherNineTwoThree" />
