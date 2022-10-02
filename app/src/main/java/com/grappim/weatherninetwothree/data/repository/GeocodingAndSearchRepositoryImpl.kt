@@ -26,9 +26,13 @@ class GeocodingAndSearchRepositoryImpl @Inject constructor(
                         it.properties.city?.isNotEmpty() == true
                     }
                     .forEach {
+                        val title = StringBuilder(it.properties.city!!)
+                        if (it.properties.country?.isNotEmpty() == true) {
+                            title.append(" (${it.properties.country})")
+                        }
                         found.add(
                             FoundLocation(
-                                cityName = it.properties.city!!,
+                                cityName = title.toString(),
                                 latitude = it.properties.lat,
                                 longitude = it.properties.lon
                             )
